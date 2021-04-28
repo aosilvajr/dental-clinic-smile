@@ -1,7 +1,5 @@
-import { AccountModel } from '../../domain/models/account'
-import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account'
-import { InvalidParamError, ServerError, MissingParamError } from '../errors'
-import { EmailValidator } from '../protocols'
+import { AddAccount, AccountModel, AddAccountModel, EmailValidator } from './signup-protocols'
+import { InvalidParamError, ServerError, MissingParamError } from '../../errors'
 import { SignUpController } from './signup'
 
 const makeEmailValidator = (): EmailValidator => {
@@ -17,8 +15,6 @@ const makeEmailValidator = (): EmailValidator => {
 }
 
 const makeAddAccount = (): AddAccount => {
-  // Stub = Double test (Dublê de testes)
-  // ou seja função com retorno marretado (fixo)
   class AddAccountStub implements AddAccount {
     add (account: AddAccountModel): AccountModel {
       const fakeAccount = {

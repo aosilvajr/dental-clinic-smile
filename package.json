@@ -23,7 +23,14 @@
   },
   "scripts": {
     "prepare": "husky install",
+    "build": "rimraf dist && tsc -p tsconfig-build.json",
     "test": "jest --passWithNoTests --watch",
     "test:staged": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.2"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }

@@ -1,6 +1,7 @@
-import { AddAccount, httpRequest, HttpResponse, EmailValidator, Controller } from './signup-protocols'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { badRequest, ok, serverError } from '@/presentation/helper/http-helper'
+
+import { AddAccount, httpRequest, HttpResponse, EmailValidator, Controller } from './signup-protocols'
 
 export class SignUpController implements Controller {
   constructor (

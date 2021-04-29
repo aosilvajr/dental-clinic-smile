@@ -8,6 +8,19 @@ import {
   AddAccountRepository
 } from './db-add-account-protocols'
 
+const fakeAccountModel: AddAccountModel = ({
+  name: faker.name.firstName(),
+  email: faker.internet.email(),
+  password: faker.internet.password()
+})
+
+const fakeAccount: AccountModel = ({
+  id: faker.datatype.uuid(),
+  name: fakeAccountModel.name,
+  email: fakeAccountModel.email,
+  password: 'hashed_password'
+})
+
 const makeEncrypter = (): Encrypter => {
   class EncrypterStub implements Encrypter {
     async encrypt (value: string): Promise<string> {
@@ -21,13 +34,6 @@ const makeEncrypter = (): Encrypter => {
 const makeAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
     async add (accountData: AddAccountModel): Promise<AccountModel> {
-      const fakeAccount = {
-        id: faker.datatype.uuid(),
-        name: faker.name.firstName(),
-        email: faker.internet.email(),
-        password: 'hashed_password'
-      }
-
       return Promise.resolve(fakeAccount)
     }
   }
@@ -108,5 +114,11 @@ describe('DbAddAccount Usecase', () => {
     }
     const promise = sut.add(accountData)
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return an account on success', async () => {
+    const { sut } = makeSut()
+    const account = await sut.add(fakeAccountModel)
+    expect(account).toEqual(fakeAccount)
   })
 })

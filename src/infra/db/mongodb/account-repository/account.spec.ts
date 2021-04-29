@@ -10,6 +10,10 @@ const fakeAccount: AddAccountModel = ({
   password: faker.internet.password()
 })
 
+const makeSut = (): AccountMongoRespository => {
+  return new AccountMongoRespository()
+}
+
 describe('Account Mongo Respository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -20,7 +24,7 @@ describe('Account Mongo Respository', () => {
   })
 
   test('Should return an account on success', async () => {
-    const sut = new AccountMongoRespository()
+    const sut = makeSut()
     const account = await sut.add(fakeAccount)
 
     expect(account).toBeTruthy() // Não seja nulo, tendo valor tá ok

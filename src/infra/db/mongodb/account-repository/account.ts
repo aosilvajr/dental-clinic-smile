@@ -9,8 +9,7 @@ export class AccountMongoRespository implements AddAccount {
       .getCollection('accounts')
     const result = await accountCollection
       .insertOne(accountData)
-    const account = result.ops[0]
-    const { _id, ...rest } = account
-    return Object.assign({}, rest, { id: _id })
+
+    return MongoHelper.map(result.ops[0])
   }
 }

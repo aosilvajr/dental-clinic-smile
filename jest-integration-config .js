@@ -1,3 +1,3 @@
 const jestConfig = require('./jest.config')
-jestConfig.testMatch = ['**/*.spec.ts']
+jestConfig.testMatch = ['**/*.test.ts']
 module.exports = jestConfig

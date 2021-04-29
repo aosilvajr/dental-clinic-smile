@@ -1,7 +1,7 @@
-import { Encrypter } from '@/data/protocols/encryter'
 import faker from 'faker'
 
 import { DbAddAccount } from './db-add-account'
+import { Encrypter } from './db-add-account-protocols'
 
 type SutTypes = {
   sut: DbAddAccount,

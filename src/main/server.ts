@@ -1,4 +1,13 @@
 import 'module-alias/register'
-import app from './config/app'
 
-app.listen(5000, () => console.log('Server running port 5000'))
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+
+import env from './config/env'
+
+MongoHelper.connect(env.MONGO_URL)
+  .then(async () => {
+    const app = (await import('./config/app')).default
+
+    app.listen(env.PORT, () => console.log(`Server running at http://localhost:${env.PORT}`))
+  })
+  .catch(console.error)

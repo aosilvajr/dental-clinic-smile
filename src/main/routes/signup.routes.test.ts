@@ -24,8 +24,8 @@ describe('Signup Routes', () => {
       .send({
         name: faker.internet.userName(),
         email: faker.internet.email(),
-        password: faker.internet.password(),
-        passwordConfirmation: faker.internet.password()
+        password: 'any_value',
+        passwordConfirmation: 'any_value'
       })
       .expect(200)
   })

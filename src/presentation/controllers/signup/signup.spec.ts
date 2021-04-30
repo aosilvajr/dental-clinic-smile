@@ -1,7 +1,8 @@
+import faker from 'faker'
+
 import { InvalidParamError, ServerError, MissingParamError } from '@/presentation/errors'
 import { badRequest, ok, serverError } from '@/presentation/helper/http-helper'
 import { httpRequest } from '@/presentation/protocols'
-import faker from 'faker'
 
 import { SignUpController } from './signup'
 import { AddAccount, AccountModel, AddAccountModel, EmailValidator } from './signup-protocols'

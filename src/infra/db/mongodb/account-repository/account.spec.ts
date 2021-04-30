@@ -1,6 +1,7 @@
+import faker from 'faker'
+
 import { AddAccountModel } from '@/domain/usecases/add-account'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
-import faker from 'faker'
 
 import { AccountMongoRespository } from './account'
 

@@ -1,5 +1,5 @@
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
-import { badRequest, serverError, unauthorized } from '@/presentation/helper/http-helper'
+import { badRequest, ok, serverError, unauthorized } from '@/presentation/helper/http-helper'
 
 import {
   Controller,
@@ -37,6 +37,8 @@ export class LoginController implements Controller {
       if (!token) {
         return unauthorized()
       }
+
+      return ok({ token })
     } catch (error) {
       return serverError(error)
     }

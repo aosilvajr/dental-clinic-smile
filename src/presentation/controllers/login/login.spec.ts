@@ -1,7 +1,7 @@
 import faker from 'faker'
 
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
-import { badRequest } from '@/presentation/helper/http-helper'
+import { badRequest, serverError } from '@/presentation/helper/http-helper'
 import { httpRequest } from '@/presentation/protocols'
 import { EmailValidator } from '@/presentation/protocols/email-validator'
 
@@ -78,5 +78,18 @@ describe('Login Controller', () => {
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
     await sut.handle(fakeRequest)
     expect(isValidSpy).toHaveBeenCalledWith(fakeRequest.body.email)
+  })
+
+  test('Should return 500 if EmailValidator throw', async () => {
+    const { sut, emailValidatorStub } = makeSut()
+
+    // Mocka o metodo inteiro e não apenas o retorno
+    jest.spyOn(emailValidatorStub, 'isValid')
+      .mockImplementationOnce(() => {
+        throw new Error()
+      })
+
+    const httpResponse = await sut.handle(fakeRequest)
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })

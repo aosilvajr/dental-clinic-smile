@@ -3,14 +3,14 @@ import faker from 'faker'
 import { ServerError, MissingParamError } from '@/presentation/errors'
 import { badRequest, ok, serverError } from '@/presentation/helper/http/http-helper'
 
-import { SignUpController } from './signup'
+import { SignUpController } from './signup-controller'
 import {
   AddAccount,
   AccountModel,
   AddAccountModel,
   Validation,
   httpRequest
-} from './signup-protocols'
+} from './signup-controller-protocols'
 
 const fakePassword = faker.internet.password()
 

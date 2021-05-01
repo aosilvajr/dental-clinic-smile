@@ -1,11 +1,11 @@
 import faker from 'faker'
 
-import { LogErrorRepository } from '@/data/protocols/db/log-error-repository'
+import { LogErrorRepository } from '@/data/protocols/db/log/log-error-repository'
 import { AccountModel } from '@/domain/models/account'
 import { ok, serverError } from '@/presentation/helper/http/http-helper'
 import { Controller, httpRequest, HttpResponse } from '@/presentation/protocols'
 
-import { LogControllerDecorator } from './log'
+import { LogControllerDecorator } from './log-controller-decorator'
 
 const fakePassword = faker.internet.password()
 

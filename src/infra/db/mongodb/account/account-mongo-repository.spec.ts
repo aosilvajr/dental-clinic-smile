@@ -4,7 +4,7 @@ import { Collection } from 'mongodb'
 import { AddAccountModel } from '@/domain/usecases/add-account'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
-import { AccountMongoRespository } from './account'
+import { AccountMongoRespository } from './account-mongo-repository'
 
 const fakeAccount: AddAccountModel = {
   name: faker.internet.userName(),

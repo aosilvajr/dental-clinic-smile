@@ -1,12 +1,10 @@
 import faker from 'faker'
 
-import { Authentication } from '@/domain/usecases/authentication'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { badRequest, serverError, unauthorized } from '@/presentation/helper/http-helper'
-import { httpRequest } from '@/presentation/protocols'
-import { EmailValidator } from '@/presentation/protocols/email-validator'
 
 import { LoginController } from './login'
+import { httpRequest, EmailValidator, Authentication } from './login-protocols'
 
 const fakeRequest: httpRequest = {
   body: {

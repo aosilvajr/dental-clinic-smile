@@ -11,11 +11,11 @@ jest.mock('jsonwebtoken', () => ({
 
 const fakeAccountId: string = faker.datatype.uuid()
 
-describe('Jwt Adapter', () => {
-  test('Should call sign with correct values', () => {
+describe('JwtAdapter', () => {
+  test('Should call sign with correct values', async () => {
     const sut = new JwtAdapter('secret')
     const signSpy = jest.spyOn(jwt, 'sign')
-    sut.encrypt(fakeAccountId)
+    await sut.encrypt(fakeAccountId)
     expect(signSpy).toHaveBeenCalledWith({
       id: fakeAccountId
     }, 'secret')
@@ -25,5 +25,17 @@ describe('Jwt Adapter', () => {
     const sut = new JwtAdapter('secret')
     const token = await sut.encrypt(fakeAccountId)
     expect(token).toBe('any_token')
+  })
+
+  test('Should throw if sign throws', async () => {
+    const sut = new JwtAdapter('secret')
+
+    jest.spyOn(jwt, 'sign')
+      .mockImplementationOnce(() => {
+        throw new Error()
+      })
+
+    const promise = sut.encrypt(fakeAccountId)
+    await expect(promise).rejects.toThrow()
   })
 })

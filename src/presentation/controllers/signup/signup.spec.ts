@@ -119,7 +119,7 @@ describe('SignUp Controller', () => {
     expect(validateSpy).toHaveBeenCalledWith(fakeRequest.body)
   })
 
-  test('Should return 200 if valid data is provided', async () => {
+  test('Should return 400 if Validation returns an error', async () => {
     const { sut, validationStub } = makeSut()
 
     jest

@@ -1,7 +1,7 @@
 import faker from 'faker'
 
 import { MissingParamError } from '@/presentation/errors'
-import { badRequest, ok, serverError, unauthorized } from '@/presentation/helper/http-helper'
+import { badRequest, ok, serverError, unauthorized } from '@/presentation/helper/http/http-helper'
 
 import { LoginController } from './login'
 import { httpRequest, Validation, Authentication } from './login-protocols'

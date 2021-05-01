@@ -1,7 +1,7 @@
 import faker from 'faker'
 
 import { ServerError, MissingParamError } from '@/presentation/errors'
-import { badRequest, ok, serverError } from '@/presentation/helper/http-helper'
+import { badRequest, ok, serverError } from '@/presentation/helper/http/http-helper'
 
 import { SignUpController } from './signup'
 import {

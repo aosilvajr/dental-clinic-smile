@@ -1,7 +1,7 @@
 import { ServerError } from '@/presentation/errors/server-error'
 import { HttpResponse } from '@/presentation/protocols/http'
 
-import { UnauthorizedError } from '../errors'
+import { UnauthorizedError } from '../../errors'
 
 export const ok = (data: any): HttpResponse => ({
   statusCode: 200,

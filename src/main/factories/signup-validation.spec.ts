@@ -1,3 +1,4 @@
+import { CompareFieldValidation } from '@/presentation/helper/validators/comparer-fields-validation'
 import { RequiredFieldValidation } from '@/presentation/helper/validators/required-field-validation'
 import { Validation } from '@/presentation/helper/validators/validation'
 import { ValidationComposite } from '@/presentation/helper/validators/validation-composite'
@@ -15,6 +16,7 @@ describe('SignUpValidation Factory', () => {
       validations.push(new RequiredFieldValidation(field))
     }
 
+    validations.push(new CompareFieldValidation('password', 'passwordConfirmation'))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })

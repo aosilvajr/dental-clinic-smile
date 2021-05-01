@@ -3,6 +3,12 @@ import jwt from 'jsonwebtoken'
 
 import { JwtAdapter } from './jwt-adapter'
 
+jest.mock('jsonwebtoken', () => ({
+  async sign (): Promise<string> {
+    return Promise.resolve('any_token')
+  }
+}))
+
 const fakeAccountId: string = faker.datatype.uuid()
 
 describe('Jwt Adapter', () => {
@@ -13,5 +19,11 @@ describe('Jwt Adapter', () => {
     expect(signSpy).toHaveBeenCalledWith({
       id: fakeAccountId
     }, 'secret')
+  })
+
+  test('Should return a token on sign success', async () => {
+    const sut = new JwtAdapter('secret')
+    const token = await sut.encrypt(fakeAccountId)
+    expect(token).toBe('any_token')
   })
 })

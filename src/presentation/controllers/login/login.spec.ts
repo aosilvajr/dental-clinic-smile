@@ -2,7 +2,7 @@ import faker from 'faker'
 
 import { Authentication } from '@/domain/usecases/authentication'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
-import { badRequest, serverError } from '@/presentation/helper/http-helper'
+import { badRequest, serverError, unauthorized } from '@/presentation/helper/http-helper'
 import { httpRequest } from '@/presentation/protocols'
 import { EmailValidator } from '@/presentation/protocols/email-validator'
 
@@ -112,5 +112,16 @@ describe('Login Controller', () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth')
     await sut.handle(fakeRequest)
     expect(authSpy).toHaveBeenCalledWith(fakeRequest.body.email, fakeRequest.body.password)
+  })
+
+  test('Should return 401 if an invalid credentials provided', async () => {
+    const { sut, authenticationStub } = makeSut()
+
+    jest
+      .spyOn(authenticationStub, 'auth')
+      .mockReturnValueOnce(Promise.resolve(null))
+
+    const httpResponse = await sut.handle(fakeRequest)
+    expect(httpResponse).toEqual(unauthorized())
   })
 })

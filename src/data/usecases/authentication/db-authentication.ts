@@ -20,13 +20,13 @@ export class DbAuthentication implements Authentication {
       .load(authentication.email)
     if (account) {
       const isValid = await this.hashComparer
-        .comparer(authentication.password, account.password)
+        .compare(authentication.password, account.password)
 
       if (isValid) {
         const token = await this.encrypter
           .encrypt(account.id)
         await this.updateAccessTokenRepository
-          .update(account.id, token)
+          .updateAccessToken(account.id, token)
         return token
       }
     }

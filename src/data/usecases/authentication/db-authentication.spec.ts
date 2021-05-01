@@ -1,13 +1,14 @@
 import faker from 'faker'
 
-import { HashComparer } from '@/data/protocols/criptography/hash-comparer'
-import { TokenGenerator } from '@/data/protocols/criptography/toke-generator'
-import { LoadAccountByEmailRepository } from '@/data/protocols/db/load-account-by-email-repository'
-import { UpdateAccessTokenRepository } from '@/data/protocols/db/update-access-token-repository'
-import { AccountModel } from '@/domain/models/account'
-import { AuthenticationModel } from '@/domain/usecases/authentication'
-
 import { DbAuthentication } from './db-authentication'
+import {
+  AuthenticationModel,
+  HashComparer,
+  TokenGenerator,
+  LoadAccountByEmailRepository,
+  UpdateAccessTokenRepository,
+  AccountModel
+} from './db-authentication-protocols'
 
 const fakePassword = faker.internet.password()
 

@@ -1,6 +1,6 @@
 import { InvalidParamError } from '@/presentation/errors'
 
-import { Validation } from './validation'
+import { Validation } from '../../protocols/validation'
 
 export class CompareFieldValidation implements Validation {
   constructor (

@@ -1,7 +1,7 @@
 import faker from 'faker'
 
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
-import { badRequest, serverError, unauthorized } from '@/presentation/helper/http-helper'
+import { badRequest, ok, serverError, unauthorized } from '@/presentation/helper/http-helper'
 
 import { LoginController } from './login'
 import { httpRequest, EmailValidator, Authentication } from './login-protocols'
@@ -134,5 +134,11 @@ describe('Login Controller', () => {
 
     const httpResponse = await sut.handle(fakeRequest)
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 if valid credentials provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(fakeRequest)
+    expect(httpResponse).toEqual(ok({ token: 'any_token' }))
   })
 })

@@ -1,0 +1,11 @@
+Descrição das Camadas
+- Domain => Regras de Negócio, o mesmo não deve depender de ninguem.
+- Data => Implementa as regras definidas no Domain, tem dependência direta com ele.
+- Infra => Utiliza componentes que usam bibliotecas externas como Axios, Postgres, MongoDB e etc..., tem dependência direta com o Data.
+- Presentation => Camada de apresentação de dados, tranforma os dados antes de exibir na UI, tem dependência direta com o Domain.
+- Validation => Camada de validação de dados, tem dependência direta com o Presentation.
+- Main => Contém classes que geram instâncias de outras classes, acopla as outras camadas em factories para gerar a funcionalidade.
+
+Git Tags
+$ git tag -a "1.0.0" -m "1.0.0"
+"1.0.0" => "Major.Feat.Fix"

@@ -1,8 +1,7 @@
 {
   "name": "dental_clinic_smile",
   "version": "1.0.0",
-  "description": "Sistema de gestão para a Clínica Odontologica Sorrir",
-  "main": "index.js",
+  "description": "Management system for the Dental Clinic Smile",
   "author": "Ailton Jr. <aosilvajr@gmail.com>",
   "license": "MIT",
   "scripts": {

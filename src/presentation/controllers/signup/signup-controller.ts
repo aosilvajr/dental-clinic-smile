@@ -1,4 +1,5 @@
-import { badRequest, ok, serverError } from '@/presentation/helper/http/http-helper'
+import { EmailAlreadyExists } from '@/presentation/errors'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper/http/http-helper'
 import { Validation } from '@/presentation/protocols/validation'
 
 import {
@@ -23,11 +24,14 @@ export class SignUpController implements Controller {
         return badRequest(error)
       }
       const { name, email, password } = httpRequest.body
-      await this.addAccount.add({
+      const account = await this.addAccount.add({
         name,
         email,
         password
       })
+      if (!account) {
+        return forbidden(new EmailAlreadyExists())
+      }
       const token = await this.authentication.auth({
         email,
         password

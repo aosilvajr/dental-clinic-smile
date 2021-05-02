@@ -9,3 +9,25 @@ Descrição das Camadas
 Git Tags
 $ git tag -a "1.0.0" -m "1.0.0"
 "1.0.0" => "Major.Feat.Fix"
+
+Comandos Docker
+$ docker ps
+- Mostra todos os containers que estão rodando no momento
+
+$ docker ps -a
+- Mostra todos os containers
+
+$ docker stop <CONTAINER ID>
+- Para de rodar um container
+
+$ docker container rm <CONTAINER ID>
+- Remove um container parado
+
+$ docker container prune
+- Remove todos os containers parados
+
+$ docker images -a
+- Mostra todas as images
+
+$ docker image rm <CONTAINER ID>
+- Remove uma image

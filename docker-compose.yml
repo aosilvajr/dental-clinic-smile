@@ -13,10 +13,12 @@ services:
     build: .
     restart: always
     image: dental-clinic-smile
-    command: yarn start
+    command: yarn debug
     volumes:
       - ./dist:/usr/src/dental-clinic-smile/dist
+      - ./package.json:/usr/src/dental-clinic-smile/package.json
     ports:
       - "5050:5050"
+      - "9222:9222"
     links: 
       - mongo

@@ -10,6 +10,7 @@ O objetivo desse projeto é aplicar os conhecimentos adiquiridos no treinamento 
 
 1. [Cadastro](./requirements/signup.md)
 2. [Login](./requirements/login.md)
+3. [Funcionário](./requirements/employee.md)
 
 > ## Princípios
 

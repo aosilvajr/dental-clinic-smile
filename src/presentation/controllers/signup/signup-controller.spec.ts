@@ -9,7 +9,9 @@ import {
   AccountModel,
   AddAccountModel,
   Validation,
-  httpRequest
+  httpRequest,
+  Authentication,
+  AuthenticationModel
 } from './signup-controller-protocols'
 
 const fakePassword = faker.internet.password()
@@ -50,24 +52,38 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
+const makeAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    auth (authentication: AuthenticationModel): Promise<string> {
+      return Promise.resolve('any_token')
+    }
+  }
+
+  return new AuthenticationStub()
+}
+
 type SutTypes = {
   sut: SignUpController,
   addAccountStub: AddAccount
   validationStub: Validation
+  authenticationStub: Authentication,
 }
 
 const makeSut = (): SutTypes => {
   const addAccountStub = makeAddAccount()
   const validationStub = makeValidation()
+  const authenticationStub = makeAuthentication()
   const sut = new SignUpController(
     addAccountStub,
-    validationStub
+    validationStub,
+    authenticationStub
   )
 
   return {
     sut,
     addAccountStub,
-    validationStub
+    validationStub,
+    authenticationStub
   }
 }
 
@@ -128,5 +144,15 @@ describe('SignUp Controller', () => {
 
     const httpResponse = await sut.handle(fakeRequest)
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
+  })
+
+  test('Should call Authentication with correct email', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authSpy = jest.spyOn(authenticationStub, 'auth')
+    await sut.handle(fakeRequest)
+    expect(authSpy).toHaveBeenCalledWith({
+      email: fakeRequest.body.email,
+      password: fakeRequest.body.password
+    })
   })
 })

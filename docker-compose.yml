@@ -10,10 +10,10 @@ services:
       - "27017:27017"
   api:
     container_name: api-container
-    build: .
+    image: node:14
+    working_dir: /usr/src/dental-clinic-smile
     restart: always
-    image: dental-clinic-smile
-    command: yarn debug
+    command: bash -c "yarn install --production=true && yarn debug"
     volumes:
       - ./dist:/usr/src/dental-clinic-smile/dist
       - ./package.json:/usr/src/dental-clinic-smile/package.json

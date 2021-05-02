@@ -1,7 +1,7 @@
 import faker from 'faker'
 
-import { ServerError, MissingParamError } from '@/presentation/errors'
-import { badRequest, ok, serverError } from '@/presentation/helper/http/http-helper'
+import { ServerError, MissingParamError, EmailAlreadyExists } from '@/presentation/errors'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helper/http/http-helper'
 
 import { SignUpController } from './signup-controller'
 import {
@@ -118,6 +118,17 @@ describe('SignUp Controller', () => {
       email: fakeRequest.body.email,
       password: fakeRequest.body.password
     })
+  })
+
+  test('Should return 403 if AddAccount returns null', async () => {
+    const { sut, addAccountStub } = makeSut()
+
+    jest
+      .spyOn(addAccountStub, 'add')
+      .mockReturnValueOnce(Promise.resolve(null))
+
+    const httpResponse = await sut.handle(fakeRequest)
+    expect(httpResponse).toEqual(forbidden(new EmailAlreadyExists()))
   })
 
   test('Should return 200 if valid data is provided', async () => {

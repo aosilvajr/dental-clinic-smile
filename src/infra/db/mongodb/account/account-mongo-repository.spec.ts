@@ -32,7 +32,7 @@ describe('Account Mongo Respository', () => {
     await accountCollection.deleteMany({})
   })
 
-  test('Should return an account on success', async () => {
+  test('Should return an account on add success', async () => {
     const sut = makeSut()
     const account = await sut.add(fakeAccount)
 

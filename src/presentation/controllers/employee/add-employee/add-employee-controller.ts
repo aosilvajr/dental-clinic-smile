@@ -4,12 +4,14 @@ import {
   Controller,
   httpRequest,
   HttpResponse,
-  Validation
+  Validation,
+  AddEmployee
 } from './add-employee-controller-protocols'
 
 export class AddEmployeeController implements Controller {
   constructor (
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly addEmployee: AddEmployee
   ) { }
 
   async handle (httpRequest: httpRequest): Promise<HttpResponse> {
@@ -17,6 +19,20 @@ export class AddEmployeeController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    return Promise.resolve(null)
+    const {
+      name,
+      email,
+      phone,
+      position,
+      birthday
+    } = httpRequest.body
+    await this.addEmployee.add({
+      name,
+      email,
+      phone,
+      position,
+      birthday
+    })
+    return null
   }
 }

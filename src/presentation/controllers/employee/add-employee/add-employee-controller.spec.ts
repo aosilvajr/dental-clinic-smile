@@ -1,6 +1,6 @@
 import faker from 'faker'
 
-import { badRequest } from '@/presentation/helper/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helper/http/http-helper'
 
 import { AddEmployeeController } from './add-employee-controller'
 import {
@@ -84,5 +84,16 @@ describe('AddEmployee Controller', () => {
     const httpRequest = fakeRequest
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 500 if AddEmployee throws', async () => {
+    const { sut, addEmployeeStub } = makeSut()
+
+    jest
+      .spyOn(addEmployeeStub, 'add')
+      .mockReturnValueOnce(Promise.reject(new Error()))
+
+    const httpResponse = await sut.handle(fakeRequest)
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })

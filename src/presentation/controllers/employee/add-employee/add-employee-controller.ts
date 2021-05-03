@@ -1,3 +1,5 @@
+import { badRequest } from '@/presentation/helper/http/http-helper'
+
 import {
   Controller,
   httpRequest,
@@ -11,7 +13,10 @@ export class AddEmployeeController implements Controller {
   ) { }
 
   async handle (httpRequest: httpRequest): Promise<HttpResponse> {
-    this.validation.validate(httpRequest.body)
+    const error = this.validation.validate(httpRequest.body)
+    if (error) {
+      return badRequest(error)
+    }
     return Promise.resolve(null)
   }
 }

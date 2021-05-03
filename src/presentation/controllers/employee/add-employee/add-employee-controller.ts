@@ -1,4 +1,4 @@
-import { badRequest, serverError } from '@/presentation/helper/http/http-helper'
+import { badRequest, noContent, serverError } from '@/presentation/helper/http/http-helper'
 
 import {
   Controller,
@@ -34,7 +34,7 @@ export class AddEmployeeController implements Controller {
         position,
         birthday
       })
-      return null
+      return noContent()
     } catch (error) {
       return serverError(error)
     }

@@ -3,7 +3,12 @@ import faker from 'faker'
 import { badRequest } from '@/presentation/helper/http/http-helper'
 
 import { AddEmployeeController } from './add-employee-controller'
-import { httpRequest, Validation } from './add-employee-controller-protocols'
+import {
+  httpRequest,
+  Validation,
+  AddEmployee,
+  AddEmployeeModel
+} from './add-employee-controller-protocols'
 
 const fakeRequest: httpRequest = {
   body: {
@@ -25,18 +30,31 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
+const makeAddEmployee = (): AddEmployee => {
+  class AddEmployeeStub implements AddEmployee {
+    async add (data: AddEmployeeModel): Promise<void> {
+      return Promise.resolve()
+    }
+  }
+
+  return new AddEmployeeStub()
+}
+
 type SutTypes = {
   sut: AddEmployeeController,
-  validationStub: Validation
+  validationStub: Validation,
+  addEmployeeStub: AddEmployee
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
-  const sut = new AddEmployeeController(validationStub)
+  const addEmployeeStub = makeAddEmployee()
+  const sut = new AddEmployeeController(validationStub, addEmployeeStub)
 
   return {
     sut,
-    validationStub
+    validationStub,
+    addEmployeeStub
   }
 }
 
@@ -58,5 +76,13 @@ describe('AddEmployee Controller', () => {
 
     const HttpResponse = await sut.handle(fakeRequest)
     expect(HttpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call AddEmployee with correct values', async () => {
+    const { sut, addEmployeeStub } = makeSut()
+    const addSpy = jest.spyOn(addEmployeeStub, 'add')
+    const httpRequest = fakeRequest
+    await sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })

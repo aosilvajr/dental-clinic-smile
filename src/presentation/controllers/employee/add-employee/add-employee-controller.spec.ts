@@ -1,6 +1,6 @@
 import faker from 'faker'
 
-import { badRequest, serverError } from '@/presentation/helper/http/http-helper'
+import { badRequest, noContent, serverError } from '@/presentation/helper/http/http-helper'
 
 import { AddEmployeeController } from './add-employee-controller'
 import {
@@ -95,5 +95,11 @@ describe('AddEmployee Controller', () => {
 
     const httpResponse = await sut.handle(fakeRequest)
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 204 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(fakeRequest)
+    expect(httpResponse).toEqual(noContent())
   })
 })

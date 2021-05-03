@@ -1,12 +1,9 @@
 import faker from 'faker'
 
-import { AccountModel } from '@/domain/models/account'
-import { LoadAccountByToken } from '@/domain/usecases/load-account-token'
-
 import { AccessDeniedError } from '../errors/access-denied-error'
 import { forbidden, ok, serverError } from '../helper/http/http-helper'
-import { httpRequest } from '../protocols'
 import { AuthMiddleware } from './auth-middleware'
+import { httpRequest, AccountModel, LoadAccountByToken } from './auth-middleware-protocols'
 
 const fakeAccount: AccountModel = {
   id: faker.datatype.uuid(),

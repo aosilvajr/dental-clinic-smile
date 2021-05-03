@@ -1,5 +1,7 @@
 import faker from 'faker'
 
+import { badRequest } from '@/presentation/helper/http/http-helper'
+
 import { AddEmployeeController } from './add-employee-controller'
 import { httpRequest, Validation } from './add-employee-controller-protocols'
 
@@ -45,5 +47,16 @@ describe('AddEmployee Controller', () => {
     const httpRequest = fakeRequest
     await sut.handle(httpRequest)
     expect(validationSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 400 if validation fails', async () => {
+    const { sut, validationStub } = makeSut()
+
+    jest
+      .spyOn(validationStub, 'validate')
+      .mockReturnValueOnce(new Error())
+
+    const HttpResponse = await sut.handle(fakeRequest)
+    expect(HttpResponse).toEqual(badRequest(new Error()))
   })
 })

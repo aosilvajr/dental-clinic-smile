@@ -1,4 +1,4 @@
-import { Validation } from '@/presentation/controllers/signup/signup-controller-protocols'
+import { Validation } from '@/presentation/controllers/login/signup/signup-controller-protocols'
 import { MissingParamError } from '@/presentation/errors'
 
 import { ValidationComposite } from './validation-composite'

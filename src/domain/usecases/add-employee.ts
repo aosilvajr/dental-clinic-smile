@@ -4,6 +4,7 @@ export type AddEmployeeModel = {
   phone: string
   position: string
   birthday: Date
+  createdAt: Date
 }
 
 export interface AddEmployee {

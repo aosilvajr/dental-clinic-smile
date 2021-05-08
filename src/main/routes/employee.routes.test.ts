@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
-import { AddEmployeeModel } from '@/domain/usecases/add-employee'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
 import app from '../config/app'
@@ -12,7 +11,7 @@ import env from '../config/env'
 let accountCollection: Collection
 let employeeCollection: Collection
 
-const fakeEmployeeData: AddEmployeeModel = {
+const fakeEmployeeData = {
   name: faker.internet.userName(),
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),

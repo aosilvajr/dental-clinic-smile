@@ -32,7 +32,8 @@ export class AddEmployeeController implements Controller {
         email,
         phone,
         position,
-        birthday
+        birthday,
+        createdAt: new Date()
       })
       return noContent()
     } catch (error) {

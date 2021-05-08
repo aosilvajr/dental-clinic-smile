@@ -1,4 +1,5 @@
 import faker from 'faker'
+import MockDate from 'mockdate'
 
 import { DbAddEmployee } from './db-add-employee'
 import {
@@ -11,7 +12,8 @@ const fakeEmployeeData: AddEmployeeModel = {
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
   position: faker.name.jobTitle(),
-  birthday: faker.date.past()
+  birthday: faker.date.past(),
+  createdAt: new Date()
 }
 
 const makeAddEmployeeRepository = (): AddEmployeeRepository => {
@@ -40,6 +42,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbAddEmployee Usecase', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  beforeAll(() => {
+    MockDate.reset()
+  })
+
   test('Should call AddEmployeeRepository with correct values', async () => {
     const { sut, addEmployeeRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addEmployeeRepositoryStub, 'add')

@@ -11,7 +11,8 @@ const fakeEmployeeData: AddEmployeeModel = {
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
   position: faker.name.jobTitle(),
-  birthday: faker.date.past()
+  birthday: faker.date.past(),
+  createdAt: new Date()
 }
 
 const makeSut = (): EmployeeMongoRepository => {

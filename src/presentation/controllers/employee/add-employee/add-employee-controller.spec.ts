@@ -1,4 +1,5 @@
 import faker from 'faker'
+import MockDate from 'mockdate'
 
 import { badRequest, noContent, serverError } from '@/presentation/helper/http/http-helper'
 
@@ -16,7 +17,8 @@ const fakeRequest: httpRequest = {
     email: faker.internet.email(),
     phone: faker.phone.phoneNumber(),
     position: faker.name.jobTitle(),
-    birthday: faker.date.past()
+    birthday: faker.date.past(),
+    createdAt: new Date()
   }
 }
 
@@ -59,6 +61,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('AddEmployee Controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  beforeAll(() => {
+    MockDate.reset()
+  })
+
   test('Should call validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validationSpy = jest.spyOn(validationStub, 'validate')
@@ -81,7 +91,16 @@ describe('AddEmployee Controller', () => {
   test('Should call AddEmployee with correct values', async () => {
     const { sut, addEmployeeStub } = makeSut()
     const addSpy = jest.spyOn(addEmployeeStub, 'add')
-    const httpRequest = fakeRequest
+    const httpRequest = {
+      body: {
+        name: faker.internet.userName(),
+        email: faker.internet.email(),
+        phone: faker.phone.phoneNumber(),
+        position: faker.name.jobTitle(),
+        birthday: faker.date.past(),
+        createdAt: new Date()
+      }
+    }
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })

@@ -1,4 +1,4 @@
-import { ok } from '@/presentation/helper/http/http-helper'
+import { ok, serverError } from '@/presentation/helper/http/http-helper'
 
 import {
   Controller,
@@ -13,7 +13,11 @@ export class LoadEmployeesController implements Controller {
   ) { }
 
   async handle (httpRequest: httpRequest): Promise<HttpResponse> {
-    const employees = await this.loadEmployees.load()
-    return ok(employees)
+    try {
+      const employees = await this.loadEmployees.load()
+      return ok(employees)
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }

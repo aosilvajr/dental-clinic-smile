@@ -8,7 +8,7 @@ export class DbLoadEmployees implements LoadEmployees {
   ) { }
 
   async load (): Promise<EmployeeModel[]> {
-    await this.loadEmployeesRepository.loadAll()
-    return null
+    const employees = await this.loadEmployeesRepository.loadAll()
+    return employees
   }
 }

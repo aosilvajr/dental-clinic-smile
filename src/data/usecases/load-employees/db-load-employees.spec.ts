@@ -23,16 +23,35 @@ const makeFakeEmployees: EmployeeModel[] = [{
   createdAt: new Date()
 }]
 
+const makeLoadEmployeesRepository = (): LoadEmployeesRepository => {
+  class LoadEmployeesRepositoryStub implements LoadEmployeesRepository {
+    async loadAll (): Promise<EmployeeModel[]> {
+      return Promise.resolve(makeFakeEmployees)
+    }
+  }
+
+  return new LoadEmployeesRepositoryStub()
+}
+
+type SutTypes = {
+  sut: DbLoadEmployees,
+  loadEmployeesRepositoryStub: LoadEmployeesRepository
+}
+
+const makeSut = (): SutTypes => {
+  const loadEmployeesRepositoryStub = makeLoadEmployeesRepository()
+  const sut = new DbLoadEmployees(loadEmployeesRepositoryStub)
+
+  return {
+    sut,
+    loadEmployeesRepositoryStub
+  }
+}
+
 describe('DbLoadEmployees', () => {
   test('Should call LoadEmployeesRepository', async () => {
-    class LoadEmployeesRepositoryStub implements LoadEmployeesRepository {
-      async loadAll (): Promise<EmployeeModel[]> {
-        return Promise.resolve(makeFakeEmployees)
-      }
-    }
-    const loadEmployeesRepositoryStub = new LoadEmployeesRepositoryStub()
+    const { sut, loadEmployeesRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadEmployeesRepositoryStub, 'loadAll')
-    const sut = new DbLoadEmployees(loadEmployeesRepositoryStub)
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
   })

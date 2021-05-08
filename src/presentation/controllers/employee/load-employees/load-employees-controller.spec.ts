@@ -2,7 +2,7 @@
 import faker from 'faker'
 import MockDate from 'mockdate'
 
-import { ok, serverError } from '@/presentation/helper/http/http-helper'
+import { noContent, ok, serverError } from '@/presentation/helper/http/http-helper'
 
 import { LoadEmployeesController } from './load-employees-controller'
 import { LoadEmployees, EmployeeModel } from './load-employees-controller-protocols'
@@ -70,6 +70,16 @@ describe('LoadEmployees Controller', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(ok(makeFakeEmployees))
+  })
+
+  test('Should return 200 if LoadEmployees returns empty', async () => {
+    const { sut, loadEmployeesStub } = makeSut()
+
+    jest.spyOn(loadEmployeesStub, 'load')
+      .mockReturnValueOnce(Promise.resolve([]))
+
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(noContent())
   })
 
   test('Should return 500 if LoadEmployees throws', async () => {

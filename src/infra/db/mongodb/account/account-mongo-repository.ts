@@ -28,21 +28,27 @@ export class AccountMongoRespository implements AddAccount, LoadAccountByEmailRe
   async updateAccessToken (id: string, token: string): Promise<void> {
     const accountCollection = await MongoHelper
       .getCollection('accounts')
-    await accountCollection
-      .updateOne({
-        _id: id
-      }, {
-        $set: {
-          token: token
-        }
-      })
+    await accountCollection.updateOne({
+      _id: id
+    }, {
+      $set: {
+        accessToken: token
+      }
+    })
   }
 
-  async loadByToken (token: string, role?: string): Promise<AccountModel> {
+  async loadByToken (accessToken: string, role?: string): Promise<AccountModel> {
     const accountCollection = await MongoHelper
       .getCollection('accounts')
     const account = await accountCollection
-      .findOne({ token, role })
+      .findOne({
+        accessToken,
+        $or: [{
+          role
+        }, {
+          role: 'admin'
+        }]
+      })
 
     return account && MongoHelper.map(account)
   }

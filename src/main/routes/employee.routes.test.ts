@@ -1,4 +1,5 @@
 import faker from 'faker'
+import jwt from 'jsonwebtoken'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
@@ -6,6 +7,10 @@ import { AddEmployeeModel } from '@/domain/usecases/add-employee'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
 import app from '../config/app'
+import env from '../config/env'
+
+let accountCollection: Collection
+let employeeCollection: Collection
 
 const fakeEmployeeData: AddEmployeeModel = {
   name: faker.internet.userName(),
@@ -15,9 +20,28 @@ const fakeEmployeeData: AddEmployeeModel = {
   birthday: faker.date.past()
 }
 
-describe('Employee Routes', () => {
-  let employeeCollection: Collection
+const makeAccessToken = async (): Promise<string> => {
+  const res = await accountCollection.insertOne({
+    name: 'aosilvajr',
+    email: 'aosilvajr@gmail.com',
+    password: '123',
+    role: 'admin'
+  })
+  const id = res.ops[0]._id
+  const accessToken = jwt.sign({ id }, env.JWT_SECRET)
 
+  await accountCollection.updateOne({
+    _id: id
+  }, {
+    $set: {
+      accessToken
+    }
+  })
+
+  return accessToken
+}
+
+describe('Employee Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
   })
@@ -29,6 +53,9 @@ describe('Employee Routes', () => {
   beforeEach(async () => {
     employeeCollection = await MongoHelper.getCollection('employees')
     await employeeCollection.deleteMany({})
+
+    accountCollection = await MongoHelper.getCollection('accounts')
+    await accountCollection.deleteMany({})
   })
 
   describe('POST /employees', () => {
@@ -37,6 +64,16 @@ describe('Employee Routes', () => {
         .post('/api/employees')
         .send(fakeEmployeeData)
         .expect(403)
+    })
+
+    test('Should return 204 on add employee with valid token', async () => {
+      const accessToken = await makeAccessToken()
+
+      await request(app)
+        .post('/api/employees')
+        .set('x-access-token', accessToken)
+        .send(fakeEmployeeData)
+        .expect(204)
     })
   })
 })

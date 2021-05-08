@@ -1,3 +1,5 @@
+import { ok } from '@/presentation/helper/http/http-helper'
+
 import {
   Controller,
   httpRequest,
@@ -11,7 +13,7 @@ export class LoadEmployeesController implements Controller {
   ) { }
 
   async handle (httpRequest: httpRequest): Promise<HttpResponse> {
-    await this.loadEmployees.load()
-    return null
+    const employees = await this.loadEmployees.load()
+    return ok(employees)
   }
 }

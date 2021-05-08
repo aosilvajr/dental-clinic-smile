@@ -22,6 +22,31 @@ const makeFakeEmployees = (): EmployeeModel[] => [{
   createdAt: new Date()
 }]
 
+const makeLoadEmployeesStub = (): LoadEmployees => {
+  class LoadEmployeesStub implements LoadEmployees {
+    async load (): Promise<EmployeeModel[]> {
+      return Promise.resolve(makeFakeEmployees())
+    }
+  }
+
+  return new LoadEmployeesStub()
+}
+
+type SutTypes = {
+  sut: LoadEmployeesController,
+  loadEmployeesStub: LoadEmployees
+}
+
+const makeSut = (): SutTypes => {
+  const loadEmployeesStub = makeLoadEmployeesStub()
+  const sut = new LoadEmployeesController(loadEmployeesStub)
+
+  return {
+    sut,
+    loadEmployeesStub
+  }
+}
+
 describe('LoadEmployees Controller', () => {
   beforeAll(() => {
     MockDate.set(new Date())
@@ -32,14 +57,8 @@ describe('LoadEmployees Controller', () => {
   })
 
   test('Should call LoadEmployees', async () => {
-    class LoadEmployeesStub implements LoadEmployees {
-      async load (): Promise<EmployeeModel[]> {
-        return Promise.resolve(makeFakeEmployees())
-      }
-    }
-    const loadEmployeesStub = new LoadEmployeesStub()
+    const { sut, loadEmployeesStub } = makeSut()
     const loadSpy = jest.spyOn(loadEmployeesStub, 'load')
-    const sut = new LoadEmployeesController(loadEmployeesStub)
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
   })

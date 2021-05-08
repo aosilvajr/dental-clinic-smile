@@ -55,4 +55,10 @@ describe('DbLoadEmployees', () => {
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
   })
+
+  test('Should return a list of employees on success', async () => {
+    const { sut } = makeSut()
+    const employees = await sut.load()
+    expect(employees).toEqual(makeFakeEmployees)
+  })
 })

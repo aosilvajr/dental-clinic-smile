@@ -1,10 +1,13 @@
+
 import faker from 'faker'
 import MockDate from 'mockdate'
+
+import { ok } from '@/presentation/helper/http/http-helper'
 
 import { LoadEmployeesController } from './load-employees-controller'
 import { LoadEmployees, EmployeeModel } from './load-employees-controller-protocols'
 
-const makeFakeEmployees = (): EmployeeModel[] => [{
+const makeFakeEmployees: EmployeeModel[] = [{
   id: faker.datatype.uuid(),
   name: faker.internet.userName(),
   email: faker.internet.email(),
@@ -25,7 +28,7 @@ const makeFakeEmployees = (): EmployeeModel[] => [{
 const makeLoadEmployeesStub = (): LoadEmployees => {
   class LoadEmployeesStub implements LoadEmployees {
     async load (): Promise<EmployeeModel[]> {
-      return Promise.resolve(makeFakeEmployees())
+      return Promise.resolve(makeFakeEmployees)
     }
   }
 
@@ -61,5 +64,11 @@ describe('LoadEmployees Controller', () => {
     const loadSpy = jest.spyOn(loadEmployeesStub, 'load')
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(ok(makeFakeEmployees))
   })
 })

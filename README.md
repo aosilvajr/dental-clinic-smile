@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/aosilvajr/dental-clinic-smile.svg?branch=main)](https://travis-ci.org/aosilvajr/dental-clinic-smile)
+[![Coverage Status](https://coveralls.io/repos/github/aosilvajr/dental-clinic-smile/badge.svg)](https://coveralls.io/github/aosilvajr/dental-clinic-smile)
+
 # **Dental Clinic Smile**
 
 Essa API foi desenvolvida baseada no treinamento do professor Rodrigo Manguinho (Mango) na Udemy.

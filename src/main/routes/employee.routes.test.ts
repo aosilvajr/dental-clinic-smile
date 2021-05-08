@@ -32,11 +32,11 @@ describe('Employee Routes', () => {
   })
 
   describe('POST /employees', () => {
-    test('Should return 204 on add employee success', async () => {
+    test('Should return 403 on add employee without access token', async () => {
       await request(app)
         .post('/api/employees')
         .send(fakeEmployeeData)
-        .expect(204)
+        .expect(403)
     })
   })
 })

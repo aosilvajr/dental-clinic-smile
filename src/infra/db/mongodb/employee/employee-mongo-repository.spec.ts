@@ -35,10 +35,38 @@ describe('Employee Mongo Respository', () => {
     await employeeCollection.deleteMany({})
   })
 
-  test('Should add a employee on success', async () => {
-    const sut = makeSut()
-    await sut.add(fakeEmployeeData)
-    const employee = await employeeCollection.findOne({ name: fakeEmployeeData.name })
-    expect(employee).toBeTruthy()
+  describe('add()', () => {
+    test('Should add a employee on success', async () => {
+      const sut = makeSut()
+      await sut.add(fakeEmployeeData)
+      const employee = await employeeCollection.findOne({ name: fakeEmployeeData.name })
+      expect(employee).toBeTruthy()
+    })
+  })
+
+  describe('loadAll()', () => {
+    test('Should load all employee on success', async () => {
+      await employeeCollection.insertMany([
+        {
+          name: faker.internet.userName(),
+          email: faker.internet.email(),
+          phone: faker.phone.phoneNumber(),
+          position: faker.name.jobTitle(),
+          birthday: faker.date.past(),
+          createdAt: new Date()
+        },
+        {
+          name: faker.internet.userName(),
+          email: faker.internet.email(),
+          phone: faker.phone.phoneNumber(),
+          position: faker.name.jobTitle(),
+          birthday: faker.date.past(),
+          createdAt: new Date()
+        }
+      ])
+      const sut = makeSut()
+      const employees = await sut.loadAll()
+      expect(employees.length).toBe(2)
+    })
   })
 })

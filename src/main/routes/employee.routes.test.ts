@@ -75,4 +75,13 @@ describe('Employee Routes', () => {
         .expect(204)
     })
   })
+
+  describe('GET /employees', () => {
+    test('Should return 403 on load employees without access token', async () => {
+      await request(app)
+        .post('/api/employees')
+        .send(fakeEmployeeData)
+        .expect(403)
+    })
+  })
 })

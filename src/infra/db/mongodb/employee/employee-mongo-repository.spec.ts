@@ -68,5 +68,11 @@ describe('Employee Mongo Respository', () => {
       const employees = await sut.loadAll()
       expect(employees.length).toBe(2)
     })
+
+    test('Should load empty list', async () => {
+      const sut = makeSut()
+      const employees = await sut.loadAll()
+      expect(employees.length).toBe(0)
+    })
   })
 })

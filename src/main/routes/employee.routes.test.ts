@@ -84,39 +84,14 @@ describe('Employee Routes', () => {
         .expect(403)
     })
 
-    test('Should return 200 on load employees with valid access token', async () => {
-      const res = await accountCollection.insertOne({
-        name: 'aosilvajr',
-        email: 'aosilvajr@gmail.com',
-        password: '123'
-      })
-      const id = res.ops[0]._id
-      const accessToken = jwt.sign({ id }, env.JWT_SECRET)
-
-      await accountCollection.updateOne({
-        _id: id
-      }, {
-        $set: {
-          accessToken
-        }
-      })
-
-      await employeeCollection.insertMany([
-        {
-          name: faker.internet.userName(),
-          email: faker.internet.email(),
-          phone: faker.phone.phoneNumber(),
-          position: faker.name.jobTitle(),
-          birthday: faker.date.past(),
-          createdAt: new Date()
-        }
-      ])
+    test('Should return 204 on load employees with valid access token', async () => {
+      const accessToken = await makeAccessToken()
 
       await request(app)
         .get('/api/employees')
         .set('x-access-token', accessToken)
         .send(fakeEmployeeData)
-        .expect(200)
+        .expect(204)
     })
   })
 })

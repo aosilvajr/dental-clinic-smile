@@ -79,9 +79,44 @@ describe('Employee Routes', () => {
   describe('GET /employees', () => {
     test('Should return 403 on load employees without access token', async () => {
       await request(app)
-        .post('/api/employees')
+        .get('/api/employees')
         .send(fakeEmployeeData)
         .expect(403)
+    })
+
+    test('Should return 200 on load employees with valid access token', async () => {
+      const res = await accountCollection.insertOne({
+        name: 'aosilvajr',
+        email: 'aosilvajr@gmail.com',
+        password: '123'
+      })
+      const id = res.ops[0]._id
+      const accessToken = jwt.sign({ id }, env.JWT_SECRET)
+
+      await accountCollection.updateOne({
+        _id: id
+      }, {
+        $set: {
+          accessToken
+        }
+      })
+
+      await employeeCollection.insertMany([
+        {
+          name: faker.internet.userName(),
+          email: faker.internet.email(),
+          phone: faker.phone.phoneNumber(),
+          position: faker.name.jobTitle(),
+          birthday: faker.date.past(),
+          createdAt: new Date()
+        }
+      ])
+
+      await request(app)
+        .get('/api/employees')
+        .set('x-access-token', accessToken)
+        .send(fakeEmployeeData)
+        .expect(200)
     })
   })
 })

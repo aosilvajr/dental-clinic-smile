@@ -1,4 +1,5 @@
 import faker from 'faker'
+import MockDate from 'mockdate'
 
 import { LoadEmployeesRepository } from '@/data/protocols/db/account/load-employees-repository'
 import { EmployeeModel } from '@/domain/models/employee'
@@ -49,6 +50,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbLoadEmployees', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
+
   test('Should call LoadEmployeesRepository', async () => {
     const { sut, loadEmployeesRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadEmployeesRepositoryStub, 'loadAll')

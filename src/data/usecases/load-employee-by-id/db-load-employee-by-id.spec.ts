@@ -1,10 +1,11 @@
 import faker from 'faker'
 import MockDate from 'mockdate'
 
-import { LoadEmployeeByIdRepository } from '@/data/protocols/db/employee/load-employee-by-id-repository'
-import { EmployeeModel } from '@/domain/models/employee'
-
-import { DbLoadEmployeeById } from './load-employee-by-id'
+import { DbLoadEmployeeById } from './db-load-employee-by-id'
+import {
+  LoadEmployeeByIdRepository,
+  EmployeeModel
+} from './db-load-employee-by-id-protocols'
 
 const makeFakeEmployee: EmployeeModel = {
   id: faker.datatype.uuid(),

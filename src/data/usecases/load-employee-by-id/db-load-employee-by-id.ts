@@ -1,7 +1,10 @@
-import { LoadEmployeeByIdRepository } from '@/data/protocols/db/employee/load-employee-by-id-repository'
-import { EmployeeModel } from '@/domain/models/employee'
+import {
+  LoadEmployeeByIdRepository,
+  EmployeeModel,
+  LoadEmployeeById
+} from './db-load-employee-by-id-protocols'
 
-export class DbLoadEmployeeById implements LoadEmployeeByIdRepository {
+export class DbLoadEmployeeById implements LoadEmployeeById {
   constructor (
     private readonly loadEmployeeByIdRepository: LoadEmployeeByIdRepository
   ) { }

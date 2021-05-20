@@ -50,10 +50,16 @@ describe('DbLoadEmployeeById', () => {
     MockDate.reset()
   })
 
-  test('Should call LoadEmployeeByIdRepository with correct id', async () => {
+  test('Should call LoadEmployeeByIdRepository', async () => {
     const { sut, loadEmployeeByIdRepositoryStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadEmployeeByIdRepositoryStub, 'loadById')
     await sut.loadById('any_id')
     expect(loadByIdSpy).toHaveBeenCalledWith('any_id')
+  })
+
+  test('Should return employee on success', async () => {
+    const { sut } = makeSut()
+    const employee = await sut.loadById('any_id')
+    expect(employee).toEqual(makeFakeEmployee)
   })
 })

@@ -7,7 +7,7 @@ export class DbLoadEmployeeById implements LoadEmployeeByIdRepository {
   ) { }
 
   async loadById (id: string): Promise<EmployeeModel> {
-    await this.loadEmployeeByIdRepository.loadById(id)
-    return null
+    const employee = await this.loadEmployeeByIdRepository.loadById(id)
+    return employee
   }
 }

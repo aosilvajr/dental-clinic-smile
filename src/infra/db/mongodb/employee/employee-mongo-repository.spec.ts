@@ -75,4 +75,13 @@ describe('Employee Mongo Respository', () => {
       expect(employees.length).toBe(0)
     })
   })
+
+  describe('loadById()', () => {
+    test('Should load employee by id on success', async () => {
+      const res = await employeeCollection.insertOne(fakeEmployeeData)
+      const sut = makeSut()
+      const employees = await sut.loadById(res.ops[0]._id)
+      expect(employees).toBeTruthy()
+    })
+  })
 })

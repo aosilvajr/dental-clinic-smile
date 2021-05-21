@@ -1,19 +1,21 @@
 import faker from 'faker'
 
 import { InvalidParamError } from '@/presentation/errors'
-import { forbidden, serverError } from '@/presentation/helper/http/http-helper'
+import { forbidden, ok, serverError } from '@/presentation/helper/http/http-helper'
 
 import { LoadEmployeeByIdController } from './load-employee-by-id-controller'
 import { httpRequest, LoadEmployeeById, EmployeeModel } from './load-employee-by-id-controller-protocols'
 
+const employeeId: string = faker.datatype.uuid()
+
 const makeFakeRequest: httpRequest = {
   params: {
-    employeeId: faker.datatype.uuid()
+    employeeId
   }
 }
 
 const makeFakeEmployee: EmployeeModel = {
-  id: faker.datatype.uuid(),
+  id: employeeId,
   name: faker.internet.userName(),
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
@@ -74,5 +76,11 @@ describe('LoadEmployeeById Controller', () => {
 
     const httpResponse = await sut.handle(makeFakeRequest)
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest)
+    expect(httpResponse).toEqual(ok(makeFakeEmployee))
   })
 })

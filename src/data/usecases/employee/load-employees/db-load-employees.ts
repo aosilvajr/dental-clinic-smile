@@ -1,6 +1,6 @@
 import { LoadEmployeesRepository } from '@/data/protocols/db/account/load-employees-repository'
 import { EmployeeModel } from '@/domain/models/employee'
-import { LoadEmployees } from '@/domain/usecases/load-employees'
+import { LoadEmployees } from '@/domain/usecases/employee/load-employees'
 
 export class DbLoadEmployees implements LoadEmployees {
   constructor (

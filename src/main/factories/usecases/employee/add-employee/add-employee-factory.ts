@@ -1,5 +1,5 @@
-import { DbAddEmployee } from '@/data/usecases/add-employee/db-add-employee'
-import { AddEmployee } from '@/domain/usecases/add-employee'
+import { DbAddEmployee } from '@/data/usecases/employee/add-employee/db-add-employee'
+import { AddEmployee } from '@/domain/usecases/employee/add-employee'
 import { EmployeeMongoRepository } from '@/infra/db/mongodb/employee/employee-mongo-repository'
 
 export const makeDbAddEmployee = (): AddEmployee => {

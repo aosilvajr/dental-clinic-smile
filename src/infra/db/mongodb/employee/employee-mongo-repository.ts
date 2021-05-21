@@ -1,8 +1,8 @@
 import { LoadEmployeesRepository } from '@/data/protocols/db/account/load-employees-repository'
-import { AddEmployeeRepository } from '@/data/usecases/add-employee/db-add-employee-protocols'
-import { LoadEmployeeByIdRepository } from '@/data/usecases/load-employee-by-id/db-load-employee-by-id-protocols'
+import { AddEmployeeRepository } from '@/data/usecases/employee/add-employee/db-add-employee-protocols'
+import { LoadEmployeeByIdRepository } from '@/data/usecases/employee/load-employee-by-id/db-load-employee-by-id-protocols'
 import { EmployeeModel } from '@/domain/models/employee'
-import { AddEmployeeModel } from '@/domain/usecases/add-employee'
+import { AddEmployeeModel } from '@/domain/usecases/employee/add-employee'
 
 import { MongoHelper } from '../helpers/mongo-helper'
 

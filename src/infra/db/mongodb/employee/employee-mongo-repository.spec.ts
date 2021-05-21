@@ -1,7 +1,7 @@
 import faker from 'faker'
 import { Collection } from 'mongodb'
 
-import { AddEmployeeModel } from '@/domain/usecases/add-employee'
+import { AddEmployeeModel } from '@/domain/usecases/employee/add-employee'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
 import { EmployeeMongoRepository } from './employee-mongo-repository'

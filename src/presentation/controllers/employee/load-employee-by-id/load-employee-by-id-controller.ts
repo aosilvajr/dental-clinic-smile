@@ -1,3 +1,6 @@
+import { InvalidParamError } from '@/presentation/errors'
+import { forbidden } from '@/presentation/helper/http/http-helper'
+
 import {
   Controller,
   httpRequest,
@@ -11,7 +14,10 @@ export class LoadEmployeeByIdController implements Controller {
   ) { }
 
   async handle (httpRequest: httpRequest): Promise<HttpResponse> {
-    await this.loadEmployeeById.loadById(httpRequest.params.employeeId)
+    const employee = await this.loadEmployeeById.loadById(httpRequest.params.employeeId)
+    if (!employee) {
+      return forbidden(new InvalidParamError('employeeId'))
+    }
     return null
   }
 }

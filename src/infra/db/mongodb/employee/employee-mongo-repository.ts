@@ -15,12 +15,12 @@ export class EmployeeMongoRepository implements AddEmployeeRepository, LoadEmplo
   async loadAll (): Promise<EmployeeModel[]> {
     const employeeCollection = await MongoHelper.getCollection('employees')
     const employees = await employeeCollection.find().toArray()
-    return employees
+    return MongoHelper.mapCollection(employees)
   }
 
   async loadById (id: string): Promise<EmployeeModel> {
     const employeeCollection = await MongoHelper.getCollection('employees')
     const employee = await employeeCollection.findOne({ _id: id })
-    return employee
+    return employee && MongoHelper.map(employee)
   }
 }

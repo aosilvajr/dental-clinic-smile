@@ -46,7 +46,7 @@ describe('Employee Mongo Respository', () => {
 
   describe('loadAll()', () => {
     test('Should load all employee on success', async () => {
-      await employeeCollection.insertMany([
+      const fakeEmployeesData = [
         {
           name: faker.internet.userName(),
           email: faker.internet.email(),
@@ -63,10 +63,14 @@ describe('Employee Mongo Respository', () => {
           birthday: faker.date.past(),
           createdAt: new Date()
         }
-      ])
+      ]
+      await employeeCollection.insertMany(fakeEmployeesData)
       const sut = makeSut()
       const employees = await sut.loadAll()
       expect(employees.length).toBe(2)
+      expect(employees[0].id).toBeTruthy()
+      expect(employees[0].name).toBe(fakeEmployeesData[0].name)
+      expect(employees[1].name).toBe(fakeEmployeesData[1].name)
     })
 
     test('Should load empty list', async () => {
@@ -82,6 +86,7 @@ describe('Employee Mongo Respository', () => {
       const sut = makeSut()
       const employees = await sut.loadById(res.ops[0]._id)
       expect(employees).toBeTruthy()
+      expect(employees.id).toBeTruthy()
     })
   })
 })

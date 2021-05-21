@@ -1,5 +1,8 @@
 import faker from 'faker'
 
+import { InvalidParamError } from '@/presentation/errors'
+import { forbidden } from '@/presentation/helper/http/http-helper'
+
 import { LoadEmployeeByIdController } from './load-employee-by-id-controller'
 import { httpRequest, LoadEmployeeById, EmployeeModel } from './load-employee-by-id-controller-protocols'
 
@@ -50,5 +53,15 @@ describe('LoadEmployeeById Controller', () => {
     const loadByIdSpy = jest.spyOn(loadEmployeeByIdStub, 'loadById')
     await sut.handle(makeFakeRequest)
     expect(loadByIdSpy).toHaveBeenCalledWith(makeFakeRequest.params.employeeId)
+  })
+
+  test('Should return 403 if LoadEmployeById returns null', async () => {
+    const { sut, loadEmployeeByIdStub } = makeSut()
+
+    jest.spyOn(loadEmployeeByIdStub, 'loadById')
+      .mockReturnValueOnce(Promise.resolve(null))
+
+    const httpResponse = await sut.handle(makeFakeRequest)
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('employeeId')))
   })
 })

@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@/presentation/errors'
-import { forbidden, serverError } from '@/presentation/helper/http/http-helper'
+import { forbidden, serverError, ok } from '@/presentation/helper/http/http-helper'
 
 import {
   Controller,
@@ -19,7 +19,7 @@ export class LoadEmployeeByIdController implements Controller {
       if (!employee) {
         return forbidden(new InvalidParamError('employeeId'))
       }
-      return null
+      return ok(employee)
     } catch (error) {
       return serverError(error)
     }

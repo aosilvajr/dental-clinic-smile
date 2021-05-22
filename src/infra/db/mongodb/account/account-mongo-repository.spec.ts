@@ -1,11 +1,11 @@
 import { Collection } from 'mongodb'
 
-import { AddAccountModel } from '@/domain/usecases/account/add-account'
+import { AddAccountParams } from '@/domain/usecases/account/add-account'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
 import { AccountMongoRespository } from './account-mongo-repository'
 
-const fakeAccount: AddAccountModel = {
+const fakeAccount: AddAccountParams = {
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'any_password'

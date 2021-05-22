@@ -2,7 +2,7 @@ import faker from 'faker'
 
 import { DbAuthentication } from './db-authentication'
 import {
-  AuthenticationModel,
+  AuthenticationParams,
   HashComparer,
   Encrypter,
   LoadAccountByEmailRepository,
@@ -12,7 +12,7 @@ import {
 
 const fakePassword = faker.internet.password()
 
-const fakeAuthentication: AuthenticationModel = {
+const fakeAuthentication: AuthenticationParams = {
   email: faker.internet.email(),
   password: fakePassword
 }

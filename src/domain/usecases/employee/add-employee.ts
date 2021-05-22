@@ -1,12 +1,7 @@
-export type AddEmployeeModel = {
-  name: string
-  email: string
-  phone: string
-  position: string
-  birthday: Date
-  createdAt: Date
-}
+import { EmployeeModel } from '@/domain/models/employee'
+
+export type AddEmployeeParams = Omit<EmployeeModel, 'id'>
 
 export interface AddEmployee {
-  add(data: AddEmployeeModel): Promise<void>
+  add(data: AddEmployeeParams): Promise<void>
 }

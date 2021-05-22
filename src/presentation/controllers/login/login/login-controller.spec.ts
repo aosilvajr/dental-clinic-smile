@@ -8,7 +8,7 @@ import {
   httpRequest,
   Validation,
   Authentication,
-  AuthenticationModel
+  AuthenticationParams
 } from './login-controller-protocols'
 
 const fakeRequest: httpRequest = {
@@ -20,7 +20,7 @@ const fakeRequest: httpRequest = {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    auth (authentication: AuthenticationModel): Promise<string> {
+    auth (authentication: AuthenticationParams): Promise<string> {
       return Promise.resolve('any_token')
     }
   }

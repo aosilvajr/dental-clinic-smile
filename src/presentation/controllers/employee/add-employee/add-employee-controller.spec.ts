@@ -8,7 +8,7 @@ import {
   httpRequest,
   Validation,
   AddEmployee,
-  AddEmployeeModel
+  AddEmployeeParams
 } from './add-employee-controller-protocols'
 
 const makeFakeRequest = (): httpRequest => ({
@@ -34,7 +34,7 @@ const makeValidation = (): Validation => {
 
 const makeAddEmployee = (): AddEmployee => {
   class AddEmployeeStub implements AddEmployee {
-    async add (data: AddEmployeeModel): Promise<void> {
+    async add (data: AddEmployeeParams): Promise<void> {
       return Promise.resolve()
     }
   }

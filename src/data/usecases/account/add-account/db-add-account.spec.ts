@@ -3,7 +3,7 @@ import faker from 'faker'
 import { DbAddAccount } from './db-add-account'
 import {
   Hasher,
-  AddAccountModel,
+  AddAccountParams,
   AccountModel,
   AddAccountRepository,
   LoadAccountByEmailRepository
@@ -11,7 +11,7 @@ import {
 
 const fakePassword = faker.internet.password()
 
-const fakeAccountData: AddAccountModel = {
+const fakeAccountData: AddAccountParams = {
   name: faker.internet.userName(),
   email: faker.internet.email(),
   password: fakePassword
@@ -36,7 +36,7 @@ const makeHasher = (): Hasher => {
 
 const makeAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async add (accountData: AddAccountModel): Promise<AccountModel> {
+    async add (accountData: AddAccountParams): Promise<AccountModel> {
       return Promise.resolve(fakeAccount)
     }
   }

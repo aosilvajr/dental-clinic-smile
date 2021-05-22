@@ -7,11 +7,11 @@ import { SignUpController } from './signup-controller'
 import {
   AddAccount,
   AccountModel,
-  AddAccountModel,
+  AddAccountParams,
   Validation,
   httpRequest,
   Authentication,
-  AuthenticationModel
+  AuthenticationParams
 } from './signup-controller-protocols'
 
 const fakePassword = faker.internet.password()
@@ -34,7 +34,7 @@ const fakeAccount: AccountModel = {
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add (account: AddAccountModel): Promise<AccountModel> {
+    async add (account: AddAccountParams): Promise<AccountModel> {
       return Promise.resolve(fakeAccount)
     }
   }
@@ -54,7 +54,7 @@ const makeValidation = (): Validation => {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    auth (authentication: AuthenticationModel): Promise<string> {
+    auth (authentication: AuthenticationParams): Promise<string> {
       return Promise.resolve('any_token')
     }
   }

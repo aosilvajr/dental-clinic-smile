@@ -3,11 +3,11 @@ import MockDate from 'mockdate'
 
 import { DbAddEmployee } from './db-add-employee'
 import {
-  AddEmployeeModel,
+  AddEmployeeParams,
   AddEmployeeRepository
 } from './db-add-employee-protocols'
 
-const fakeEmployeeData: AddEmployeeModel = {
+const fakeEmployeeData: AddEmployeeParams = {
   name: faker.internet.userName(),
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
@@ -18,7 +18,7 @@ const fakeEmployeeData: AddEmployeeModel = {
 
 const makeAddEmployeeRepository = (): AddEmployeeRepository => {
   class AddEmployeeRepositoryStub implements AddEmployeeRepository {
-    async add (employeeData: AddEmployeeModel): Promise<void> {
+    async add (employeeData: AddEmployeeParams): Promise<void> {
       return Promise.resolve()
     }
   }

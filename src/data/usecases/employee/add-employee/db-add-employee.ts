@@ -1,6 +1,6 @@
 import {
   AddEmployee,
-  AddEmployeeModel,
+  AddEmployeeParams,
   AddEmployeeRepository
 } from './db-add-employee-protocols'
 
@@ -9,7 +9,7 @@ export class DbAddEmployee implements AddEmployee {
     private readonly addEmployeeRepository: AddEmployeeRepository
   ) { }
 
-  async add (data: AddEmployeeModel): Promise<void> {
+  async add (data: AddEmployeeParams): Promise<void> {
     await this.addEmployeeRepository.add(data)
   }
 }

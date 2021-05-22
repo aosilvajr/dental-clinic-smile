@@ -21,9 +21,9 @@ const fakeEmployeeData = {
 
 const makeAccessToken = async (): Promise<string> => {
   const res = await accountCollection.insertOne({
-    name: 'aosilvajr',
-    email: 'aosilvajr@gmail.com',
-    password: '123',
+    name: faker.internet.userName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
     role: 'admin'
   })
   const id = res.ops[0]._id
@@ -99,6 +99,16 @@ describe('Employee Routes', () => {
       await request(app)
         .get('/api/employee/any_id')
         .expect(403)
+    })
+
+    test('Should return 200 on load employee by id with valid access token', async () => {
+      const accessToken = await makeAccessToken()
+      const res = await employeeCollection.insertOne(fakeEmployeeData)
+
+      await request(app)
+        .get(`/api/employee/${res.ops[0]._id}`)
+        .set('x-access-token', accessToken)
+        .expect(200)
     })
   })
 })

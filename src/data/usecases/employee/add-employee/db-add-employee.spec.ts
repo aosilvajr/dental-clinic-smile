@@ -1,30 +1,13 @@
-import faker from 'faker'
 import MockDate from 'mockdate'
+
+import { mockAddEmployeeRepository } from '@/data/test'
+import { throwError } from '@/domain/test'
+import { mockEmployeeModel } from '@/domain/test/mock-employee'
 
 import { DbAddEmployee } from './db-add-employee'
 import {
-  AddEmployeeParams,
   AddEmployeeRepository
 } from './db-add-employee-protocols'
-
-const fakeEmployeeData: AddEmployeeParams = {
-  name: faker.internet.userName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  position: faker.name.jobTitle(),
-  birthday: faker.date.past(),
-  createdAt: new Date()
-}
-
-const makeAddEmployeeRepository = (): AddEmployeeRepository => {
-  class AddEmployeeRepositoryStub implements AddEmployeeRepository {
-    async add (employeeData: AddEmployeeParams): Promise<void> {
-      return Promise.resolve()
-    }
-  }
-
-  return new AddEmployeeRepositoryStub()
-}
 
 type SutTypes = {
   sut: DbAddEmployee,
@@ -32,7 +15,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const addEmployeeRepositoryStub = makeAddEmployeeRepository()
+  const addEmployeeRepositoryStub = mockAddEmployeeRepository()
   const sut = new DbAddEmployee(addEmployeeRepositoryStub)
 
   return {
@@ -53,9 +36,8 @@ describe('DbAddEmployee Usecase', () => {
   test('Should call AddEmployeeRepository with correct values', async () => {
     const { sut, addEmployeeRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addEmployeeRepositoryStub, 'add')
-    const employeeData = fakeEmployeeData
-    await sut.add(employeeData)
-    expect(addSpy).toHaveBeenCalledWith(employeeData)
+    await sut.add(mockEmployeeModel)
+    expect(addSpy).toHaveBeenCalledWith(mockEmployeeModel)
   })
 
   test('Should throw if AddEmployeeRepository throws', async () => {
@@ -63,9 +45,9 @@ describe('DbAddEmployee Usecase', () => {
 
     jest
       .spyOn(addEmployeeRepositoryStub, 'add')
-      .mockReturnValueOnce(Promise.reject(new Error()))
+      .mockImplementationOnce(throwError)
 
-    const promise = sut.add(fakeEmployeeData)
+    const promise = sut.add(mockEmployeeModel)
     await expect(promise).rejects.toThrow()
   })
 })

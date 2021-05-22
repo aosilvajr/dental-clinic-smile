@@ -1,10 +1,12 @@
 import faker from 'faker'
 
+import { throwError, mockEmployeeModel } from '@/domain/test'
 import { InvalidParamError } from '@/presentation/errors'
 import { forbidden, ok, serverError } from '@/presentation/helper/http/http-helper'
+import { mockLoadEmployeeById } from '@/presentation/test'
 
 import { LoadEmployeeByIdController } from './load-employee-by-id-controller'
-import { httpRequest, LoadEmployeeById, EmployeeModel } from './load-employee-by-id-controller-protocols'
+import { httpRequest, LoadEmployeeById } from './load-employee-by-id-controller-protocols'
 
 const employeeId: string = faker.datatype.uuid()
 
@@ -14,33 +16,13 @@ const makeFakeRequest: httpRequest = {
   }
 }
 
-const makeFakeEmployee: EmployeeModel = {
-  id: employeeId,
-  name: faker.internet.userName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  position: faker.name.jobTitle(),
-  birthday: faker.date.past(),
-  createdAt: new Date()
-}
-
-const makeLoadEmployeeById = (): LoadEmployeeById => {
-  class LoadEmployeByIdStub implements LoadEmployeeById {
-    async loadById (id: string): Promise<EmployeeModel> {
-      return Promise.resolve(makeFakeEmployee)
-    }
-  }
-
-  return new LoadEmployeByIdStub()
-}
-
 type SutTypes = {
   sut: LoadEmployeeByIdController,
   loadEmployeeByIdStub: LoadEmployeeById
 }
 
 const makeSut = (): SutTypes => {
-  const loadEmployeeByIdStub = makeLoadEmployeeById()
+  const loadEmployeeByIdStub = mockLoadEmployeeById()
   const sut = new LoadEmployeeByIdController(loadEmployeeByIdStub)
 
   return {
@@ -72,7 +54,7 @@ describe('LoadEmployeeById Controller', () => {
 
     jest
       .spyOn(loadEmployeeByIdStub, 'loadById')
-      .mockReturnValueOnce(Promise.reject(new Error()))
+      .mockImplementationOnce(throwError)
 
     const httpResponse = await sut.handle(makeFakeRequest)
     expect(httpResponse).toEqual(serverError(new Error()))
@@ -81,6 +63,6 @@ describe('LoadEmployeeById Controller', () => {
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest)
-    expect(httpResponse).toEqual(ok(makeFakeEmployee))
+    expect(httpResponse).toEqual(ok(mockEmployeeModel))
   })
 })

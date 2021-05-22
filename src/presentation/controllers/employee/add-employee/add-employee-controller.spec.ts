@@ -1,17 +1,18 @@
 import faker from 'faker'
 import MockDate from 'mockdate'
 
+import { throwError } from '@/domain/test'
 import { badRequest, noContent, serverError } from '@/presentation/helper/http/http-helper'
+import { mockAddEmployee, mockValidation } from '@/presentation/test'
 
 import { AddEmployeeController } from './add-employee-controller'
 import {
   httpRequest,
   Validation,
-  AddEmployee,
-  AddEmployeeParams
+  AddEmployee
 } from './add-employee-controller-protocols'
 
-const makeFakeRequest = (): httpRequest => ({
+const mockRequest = (): httpRequest => ({
   body: {
     name: faker.internet.userName(),
     email: faker.internet.email(),
@@ -22,26 +23,6 @@ const makeFakeRequest = (): httpRequest => ({
   }
 })
 
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null
-    }
-  }
-
-  return new ValidationStub()
-}
-
-const makeAddEmployee = (): AddEmployee => {
-  class AddEmployeeStub implements AddEmployee {
-    async add (data: AddEmployeeParams): Promise<void> {
-      return Promise.resolve()
-    }
-  }
-
-  return new AddEmployeeStub()
-}
-
 type SutTypes = {
   sut: AddEmployeeController,
   validationStub: Validation,
@@ -49,8 +30,8 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const validationStub = makeValidation()
-  const addEmployeeStub = makeAddEmployee()
+  const validationStub = mockValidation()
+  const addEmployeeStub = mockAddEmployee()
   const sut = new AddEmployeeController(validationStub, addEmployeeStub)
 
   return {
@@ -72,7 +53,7 @@ describe('AddEmployee Controller', () => {
   test('Should call validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validationSpy = jest.spyOn(validationStub, 'validate')
-    const httpRequest = makeFakeRequest()
+    const httpRequest = mockRequest()
     await sut.handle(httpRequest)
     expect(validationSpy).toHaveBeenCalledWith(httpRequest.body)
   })
@@ -84,14 +65,14 @@ describe('AddEmployee Controller', () => {
       .spyOn(validationStub, 'validate')
       .mockReturnValueOnce(new Error())
 
-    const HttpResponse = await sut.handle(makeFakeRequest())
+    const HttpResponse = await sut.handle(mockRequest())
     expect(HttpResponse).toEqual(badRequest(new Error()))
   })
 
   test('Should call AddEmployee with correct values', async () => {
     const { sut, addEmployeeStub } = makeSut()
     const addSpy = jest.spyOn(addEmployeeStub, 'add')
-    const httpRequest = makeFakeRequest()
+    const httpRequest = mockRequest()
     await sut.handle(httpRequest)
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })
@@ -101,15 +82,15 @@ describe('AddEmployee Controller', () => {
 
     jest
       .spyOn(addEmployeeStub, 'add')
-      .mockReturnValueOnce(Promise.reject(new Error()))
+      .mockImplementationOnce(throwError)
 
-    const httpResponse = await sut.handle(makeFakeRequest())
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return 204 on success', async () => {
     const { sut } = makeSut()
-    const httpResponse = await sut.handle(makeFakeRequest())
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
   })
 })

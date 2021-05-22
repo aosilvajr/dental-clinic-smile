@@ -1,39 +1,12 @@
-
-import faker from 'faker'
 import MockDate from 'mockdate'
 
+import { throwError } from '@/domain/test'
+import { mockEmployeesModel } from '@/domain/test/mock-employee'
 import { noContent, ok, serverError } from '@/presentation/helper/http/http-helper'
+import { mockLoadEmployees } from '@/presentation/test'
 
 import { LoadEmployeesController } from './load-employees-controller'
-import { LoadEmployees, EmployeeModel } from './load-employees-controller-protocols'
-
-const makeFakeEmployees: EmployeeModel[] = [{
-  id: faker.datatype.uuid(),
-  name: faker.internet.userName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  position: faker.name.jobTitle(),
-  birthday: faker.date.past(),
-  createdAt: new Date()
-}, {
-  id: faker.datatype.uuid(),
-  name: faker.internet.userName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  position: faker.name.jobTitle(),
-  birthday: faker.date.past(),
-  createdAt: new Date()
-}]
-
-const makeLoadEmployeesStub = (): LoadEmployees => {
-  class LoadEmployeesStub implements LoadEmployees {
-    async load (): Promise<EmployeeModel[]> {
-      return Promise.resolve(makeFakeEmployees)
-    }
-  }
-
-  return new LoadEmployeesStub()
-}
+import { LoadEmployees } from './load-employees-controller-protocols'
 
 type SutTypes = {
   sut: LoadEmployeesController,
@@ -41,7 +14,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const loadEmployeesStub = makeLoadEmployeesStub()
+  const loadEmployeesStub = mockLoadEmployees()
   const sut = new LoadEmployeesController(loadEmployeesStub)
 
   return {
@@ -69,7 +42,7 @@ describe('LoadEmployees Controller', () => {
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({})
-    expect(httpResponse).toEqual(ok(makeFakeEmployees))
+    expect(httpResponse).toEqual(ok(mockEmployeesModel))
   })
 
   test('Should return 200 if LoadEmployees returns empty', async () => {
@@ -87,7 +60,7 @@ describe('LoadEmployees Controller', () => {
 
     jest
       .spyOn(loadEmployeesStub, 'load')
-      .mockReturnValueOnce(Promise.reject(new Error()))
+      .mockImplementationOnce(throwError)
 
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(serverError(new Error()))

@@ -1,16 +1,10 @@
-import faker from 'faker'
+import { mockAccountModel, throwError } from '@/domain/test'
 
 import { AccessDeniedError } from '../errors/access-denied-error'
 import { forbidden, ok, serverError } from '../helper/http/http-helper'
+import { mockLoadAccountByToken } from '../test'
 import { AuthMiddleware } from './auth-middleware'
-import { httpRequest, AccountModel, LoadAccountByToken } from './auth-middleware-protocols'
-
-const fakeAccount: AccountModel = {
-  id: faker.datatype.uuid(),
-  name: faker.internet.userName(),
-  email: faker.internet.email(),
-  password: faker.internet.password()
-}
+import { httpRequest, LoadAccountByToken } from './auth-middleware-protocols'
 
 const makeFakeRequest = (): httpRequest => ({
   headers: {
@@ -18,23 +12,13 @@ const makeFakeRequest = (): httpRequest => ({
   }
 })
 
-const makeLoadAccountByToken = (): LoadAccountByToken => {
-  class LoadAccountByTokenStub implements LoadAccountByToken {
-    async load (token: string, role?: string): Promise<AccountModel> {
-      return Promise.resolve(fakeAccount)
-    }
-  }
-
-  return new LoadAccountByTokenStub()
-}
-
 type SutTypes = {
   sut: AuthMiddleware,
   loadAccountByTokenStub: LoadAccountByToken
 }
 
 const makeSut = (role?: string): SutTypes => {
-  const loadAccountByTokenStub = makeLoadAccountByToken()
+  const loadAccountByTokenStub = mockLoadAccountByToken()
   const sut = new AuthMiddleware(loadAccountByTokenStub, role)
 
   return {
@@ -72,7 +56,7 @@ describe('Auth Middleware', () => {
   test('Should return 200 if no LoadAccountByToken returns an account', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
-    expect(httpResponse).toEqual(ok({ accountId: fakeAccount.id }))
+    expect(httpResponse).toEqual(ok({ accountId: mockAccountModel.id }))
   })
 
   test('Should return 400 if no LoadAccountByToken throws', async () => {
@@ -80,7 +64,7 @@ describe('Auth Middleware', () => {
 
     jest
       .spyOn(loadAccountByTokenStub, 'load')
-      .mockReturnValueOnce(Promise.reject(new Error()))
+      .mockImplementationOnce(throwError)
 
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error()))

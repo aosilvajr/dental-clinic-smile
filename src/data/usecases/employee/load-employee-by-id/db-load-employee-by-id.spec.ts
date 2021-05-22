@@ -1,31 +1,13 @@
-import faker from 'faker'
 import MockDate from 'mockdate'
+
+import { mockLoadEmployeeByIdRepository } from '@/data/test'
+import { throwError } from '@/domain/test'
+import { mockEmployeeModel } from '@/domain/test/mock-employee'
 
 import { DbLoadEmployeeById } from './db-load-employee-by-id'
 import {
-  LoadEmployeeByIdRepository,
-  EmployeeModel
+  LoadEmployeeByIdRepository
 } from './db-load-employee-by-id-protocols'
-
-const makeFakeEmployee: EmployeeModel = {
-  id: faker.datatype.uuid(),
-  name: faker.internet.userName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  position: faker.name.jobTitle(),
-  birthday: faker.date.past(),
-  createdAt: new Date()
-}
-
-const makeLoadEmployeeByIdRepository = (): LoadEmployeeByIdRepository => {
-  class LoadEmployeeByIdRepositoryStub implements LoadEmployeeByIdRepository {
-    async loadById (id: string): Promise<EmployeeModel> {
-      return Promise.resolve(makeFakeEmployee)
-    }
-  }
-
-  return new LoadEmployeeByIdRepositoryStub()
-}
 
 type SutTypes = {
   sut: DbLoadEmployeeById,
@@ -33,7 +15,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const loadEmployeeByIdRepositoryStub = makeLoadEmployeeByIdRepository()
+  const loadEmployeeByIdRepositoryStub = mockLoadEmployeeByIdRepository()
   const sut = new DbLoadEmployeeById(loadEmployeeByIdRepositoryStub)
 
   return {
@@ -54,14 +36,14 @@ describe('DbLoadEmployeeById', () => {
   test('Should call LoadEmployeeByIdRepository', async () => {
     const { sut, loadEmployeeByIdRepositoryStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadEmployeeByIdRepositoryStub, 'loadById')
-    await sut.loadById(makeFakeEmployee.id)
-    expect(loadByIdSpy).toHaveBeenCalledWith(makeFakeEmployee.id)
+    await sut.loadById(mockEmployeeModel.id)
+    expect(loadByIdSpy).toHaveBeenCalledWith(mockEmployeeModel.id)
   })
 
   test('Should return employee on success', async () => {
     const { sut } = makeSut()
-    const employee = await sut.loadById(makeFakeEmployee.id)
-    expect(employee).toEqual(makeFakeEmployee)
+    const employee = await sut.loadById(mockEmployeeModel.id)
+    expect(employee).toEqual(mockEmployeeModel)
   })
 
   test('Should throw if LoadEmployeeByIdRepository throws', async () => {
@@ -69,9 +51,9 @@ describe('DbLoadEmployeeById', () => {
 
     jest
       .spyOn(loadEmployeeByIdRepositoryStub, 'loadById')
-      .mockReturnValueOnce(Promise.reject(new Error()))
+      .mockImplementationOnce(throwError)
 
-    const promise = sut.loadById(makeFakeEmployee.id)
+    const promise = sut.loadById(mockEmployeeModel.id)
     await expect(promise).rejects.toThrow()
   })
 })

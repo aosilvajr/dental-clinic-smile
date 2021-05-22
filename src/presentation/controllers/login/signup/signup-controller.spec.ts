@@ -2,16 +2,14 @@ import faker from 'faker'
 
 import { ServerError, MissingParamError, EmailAlreadyExists } from '@/presentation/errors'
 import { badRequest, forbidden, ok, serverError } from '@/presentation/helper/http/http-helper'
+import { mockAuthentication, mockAddAccount, mockValidation } from '@/presentation/test'
 
 import { SignUpController } from './signup-controller'
 import {
   AddAccount,
-  AccountModel,
-  AddAccountParams,
   Validation,
   httpRequest,
-  Authentication,
-  AuthenticationParams
+  Authentication
 } from './signup-controller-protocols'
 
 const fakePassword = faker.internet.password()
@@ -25,43 +23,6 @@ const fakeRequest: httpRequest = {
   }
 }
 
-const fakeAccount: AccountModel = {
-  id: faker.datatype.uuid(),
-  name: faker.internet.userName(),
-  email: faker.internet.email(),
-  password: fakePassword
-}
-
-const makeAddAccount = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async add (account: AddAccountParams): Promise<AccountModel> {
-      return Promise.resolve(fakeAccount)
-    }
-  }
-
-  return new AddAccountStub()
-}
-
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null
-    }
-  }
-
-  return new ValidationStub()
-}
-
-const makeAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    auth (authentication: AuthenticationParams): Promise<string> {
-      return Promise.resolve('any_token')
-    }
-  }
-
-  return new AuthenticationStub()
-}
-
 type SutTypes = {
   sut: SignUpController,
   addAccountStub: AddAccount
@@ -70,9 +31,9 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const addAccountStub = makeAddAccount()
-  const validationStub = makeValidation()
-  const authenticationStub = makeAuthentication()
+  const addAccountStub = mockAddAccount()
+  const validationStub = mockValidation()
+  const authenticationStub = mockAuthentication()
   const sut = new SignUpController(
     addAccountStub,
     validationStub,

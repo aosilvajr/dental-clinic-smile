@@ -1,19 +1,9 @@
-import faker from 'faker'
 import { Collection } from 'mongodb'
 
-import { AddEmployeeParams } from '@/domain/usecases/employee/add-employee'
+import { mockEmployeeModel, mockEmployeesModel } from '@/domain/test'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
 import { EmployeeMongoRepository } from './employee-mongo-repository'
-
-const fakeEmployeeData: AddEmployeeParams = {
-  name: faker.internet.userName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  position: faker.name.jobTitle(),
-  birthday: faker.date.past(),
-  createdAt: new Date()
-}
 
 const makeSut = (): EmployeeMongoRepository => {
   return new EmployeeMongoRepository()
@@ -38,39 +28,21 @@ describe('Employee Mongo Respository', () => {
   describe('add()', () => {
     test('Should add a employee on success', async () => {
       const sut = makeSut()
-      await sut.add(fakeEmployeeData)
-      const employee = await employeeCollection.findOne({ name: fakeEmployeeData.name })
+      await sut.add(mockEmployeeModel)
+      const employee = await employeeCollection.findOne({ name: mockEmployeeModel.name })
       expect(employee).toBeTruthy()
     })
   })
 
   describe('loadAll()', () => {
     test('Should load all employee on success', async () => {
-      const fakeEmployeesData = [
-        {
-          name: faker.internet.userName(),
-          email: faker.internet.email(),
-          phone: faker.phone.phoneNumber(),
-          position: faker.name.jobTitle(),
-          birthday: faker.date.past(),
-          createdAt: new Date()
-        },
-        {
-          name: faker.internet.userName(),
-          email: faker.internet.email(),
-          phone: faker.phone.phoneNumber(),
-          position: faker.name.jobTitle(),
-          birthday: faker.date.past(),
-          createdAt: new Date()
-        }
-      ]
-      await employeeCollection.insertMany(fakeEmployeesData)
+      await employeeCollection.insertMany(mockEmployeesModel)
       const sut = makeSut()
       const employees = await sut.loadAll()
       expect(employees.length).toBe(2)
       expect(employees[0].id).toBeTruthy()
-      expect(employees[0].name).toBe(fakeEmployeesData[0].name)
-      expect(employees[1].name).toBe(fakeEmployeesData[1].name)
+      expect(employees[0].name).toBe(mockEmployeesModel[0].name)
+      expect(employees[1].name).toBe(mockEmployeesModel[1].name)
     })
 
     test('Should load empty list', async () => {
@@ -82,7 +54,7 @@ describe('Employee Mongo Respository', () => {
 
   describe('loadById()', () => {
     test('Should load employee by id on success', async () => {
-      const res = await employeeCollection.insertOne(fakeEmployeeData)
+      const res = await employeeCollection.insertOne(mockEmployeeModel)
       const sut = makeSut()
       const employees = await sut.loadById(res.ops[0]._id)
       expect(employees).toBeTruthy()

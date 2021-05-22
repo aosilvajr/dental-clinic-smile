@@ -1,10 +1,10 @@
 import MockDate from 'mockdate'
 
-import { UpdateEmployeeByIdRepository } from '@/data/protocols/db/employee/update-employee-by-id-repository '
 import { mockUpdateEmployeeRepository } from '@/data/test'
 import { mockEmployeeModel, throwError } from '@/domain/test'
 
-import { DbUpdateEmployee } from './update-employee-by-id'
+import { DbUpdateEmployee } from './db-update-employee-by-id'
+import { UpdateEmployeeByIdRepository } from './db-update-employee-by-id-protocols'
 
 type SutTypes = {
   sut: DbUpdateEmployee,

@@ -1,6 +1,4 @@
-import { UpdateEmployeeByIdRepository } from '@/data/protocols/db/employee/update-employee-by-id-repository '
-import { EmployeeModel } from '@/domain/models/employee'
-import { UpdateEmployeeById } from '@/domain/usecases/employee/update-employee-by-id'
+import { UpdateEmployeeByIdRepository, UpdateEmployeeById, EmployeeModel } from './db-update-employee-by-id-protocols'
 
 export class DbUpdateEmployee implements UpdateEmployeeById {
   constructor (

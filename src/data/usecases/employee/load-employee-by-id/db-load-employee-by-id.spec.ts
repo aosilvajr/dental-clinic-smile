@@ -1,8 +1,7 @@
 import MockDate from 'mockdate'
 
 import { mockLoadEmployeeByIdRepository } from '@/data/test'
-import { throwError } from '@/domain/test'
-import { mockEmployeeModel } from '@/domain/test/mock-employee'
+import { mockEmployeeModel, throwError } from '@/domain/test'
 
 import { DbLoadEmployeeById } from './db-load-employee-by-id'
 import {

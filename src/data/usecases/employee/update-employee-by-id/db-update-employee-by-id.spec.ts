@@ -33,13 +33,13 @@ describe('DbUpdateEmployeeById', () => {
   test('Should call UpdateEmployeeByIdRepository', async () => {
     const { sut, updateEmployeeByIdRepositoryStub } = makeSut()
     const updateSpy = jest.spyOn(updateEmployeeByIdRepositoryStub, 'updateById')
-    await sut.updateById(mockEmployeeModel.id)
-    expect(updateSpy).toHaveBeenCalledWith(mockEmployeeModel.id)
+    await sut.updateById(mockEmployeeModel)
+    expect(updateSpy).toHaveBeenCalledWith(mockEmployeeModel)
   })
 
   test('Should return employee on success', async () => {
     const { sut } = makeSut()
-    const employees = await sut.updateById(mockEmployeeModel.id)
+    const employees = await sut.updateById(mockEmployeeModel)
     expect(employees).toEqual(mockEmployeeModel)
   })
 
@@ -50,7 +50,7 @@ describe('DbUpdateEmployeeById', () => {
       .spyOn(updateEmployeeByIdRepositoryStub, 'updateById')
       .mockImplementationOnce(throwError)
 
-    const promise = sut.updateById(mockEmployeeModel.id)
+    const promise = sut.updateById(mockEmployeeModel)
     await expect(promise).rejects.toThrow()
   })
 })

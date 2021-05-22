@@ -1,3 +1,4 @@
+import faker from 'faker'
 import { Collection } from 'mongodb'
 
 import { mockEmployeeModel, mockEmployeesModel } from '@/domain/test'
@@ -59,6 +60,28 @@ describe('Employee Mongo Respository', () => {
       const employees = await sut.loadById(res.ops[0]._id)
       expect(employees).toBeTruthy()
       expect(employees.id).toBeTruthy()
+    })
+  })
+
+  describe('updateById()', () => {
+    test('Should update employee by id on success', async () => {
+      const res = await employeeCollection.insertOne(mockEmployeeModel)
+      const sut = makeSut()
+      const newEmployeeData = {
+        id: res.ops[0]._id,
+        name: faker.internet.userName(),
+        email: faker.internet.email(),
+        phone: faker.phone.phoneNumber(),
+        position: faker.name.jobTitle(),
+        birthday: faker.date.past(),
+        createdAt: new Date()
+      }
+      const employee = await sut.updateById(newEmployeeData)
+      expect(employee).toBeTruthy()
+      expect(employee.id).toEqual(res.ops[0]._id)
+      expect(employee.id).toEqual(newEmployeeData.id)
+      expect(employee.name).toEqual(newEmployeeData.name)
+      expect(employee.email).toEqual(newEmployeeData.email)
     })
   })
 })

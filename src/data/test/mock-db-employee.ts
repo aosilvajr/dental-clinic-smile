@@ -29,7 +29,7 @@ export const mockLoadEmployeeByIdRepository = (): LoadEmployeeByIdRepository => 
 
 export const mockUpdateEmployeeRepository = (): UpdateEmployeeByIdRepository => {
   class UpdateEmployeeByIdRepositoryStub implements UpdateEmployeeByIdRepository {
-    async updateById (id: string): Promise<EmployeeModel> {
+    async updateById (employeeData: EmployeeModel): Promise<EmployeeModel> {
       return Promise.resolve(mockEmployeeModel)
     }
   }

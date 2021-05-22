@@ -5,8 +5,8 @@ export class DbUpdateEmployee implements UpdateEmployeeById {
     private readonly updateEmployeeByIdRepository: UpdateEmployeeByIdRepository
   ) { }
 
-  async updateById (id: string): Promise<EmployeeModel> {
-    const updatedEmployee = await this.updateEmployeeByIdRepository.updateById(id)
+  async updateById (employeeData: EmployeeModel): Promise<EmployeeModel> {
+    const updatedEmployee = await this.updateEmployeeByIdRepository.updateById(employeeData)
     return updatedEmployee
   }
 }

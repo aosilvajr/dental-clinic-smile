@@ -8,7 +8,7 @@ export class DbUpdateEmployee implements UpdateEmployeeById {
   ) { }
 
   async updateById (id: string): Promise<EmployeeModel> {
-    await this.updateEmployeeByIdRepository.updateById(id)
-    return null
+    const updatedEmployee = await this.updateEmployeeByIdRepository.updateById(id)
+    return updatedEmployee
   }
 }

@@ -2,7 +2,7 @@ import MockDate from 'mockdate'
 
 import { UpdateEmployeeByIdRepository } from '@/data/protocols/db/employee/update-employee-by-id-repository '
 import { mockUpdateEmployeeRepository } from '@/data/test'
-import { mockEmployeeModel } from '@/domain/test'
+import { mockEmployeeModel, throwError } from '@/domain/test'
 
 import { DbUpdateEmployee } from './update-employee-by-id'
 
@@ -41,5 +41,16 @@ describe('DbUpdateEmployeeById', () => {
     const { sut } = makeSut()
     const employees = await sut.updateById(mockEmployeeModel.id)
     expect(employees).toEqual(mockEmployeeModel)
+  })
+
+  test('Should throw if UpdateEmployeeByIdRepository throws', async () => {
+    const { sut, updateEmployeeByIdRepositoryStub } = makeSut()
+
+    jest
+      .spyOn(updateEmployeeByIdRepositoryStub, 'updateById')
+      .mockImplementationOnce(throwError)
+
+    const promise = sut.updateById(mockEmployeeModel.id)
+    await expect(promise).rejects.toThrow()
   })
 })

@@ -13,7 +13,9 @@ O objetivo desse projeto é aplicar os conhecimentos adiquiridos no treinamento 
 
 1. [Cadastro](./requirements/signup.md)
 2. [Login](./requirements/login.md)
-3. [Funcionário](./requirements/employee.md)
+3. [Criar Funcionário](./requirements/add-employee.md)
+3. [Carregar Funcionários](./requirements/load-employees.md)
+3. [Atualizar Funcionário](./requirements/update-employee.md)
 
 > ## Princípios
 

@@ -80,7 +80,6 @@ describe('Employee Routes', () => {
     test('Should return 403 on load employees without access token', async () => {
       await request(app)
         .get('/api/employees')
-        .send(fakeEmployeeData)
         .expect(403)
     })
 
@@ -92,6 +91,14 @@ describe('Employee Routes', () => {
         .set('x-access-token', accessToken)
         .send(fakeEmployeeData)
         .expect(204)
+    })
+  })
+
+  describe('GET /employees/:employeeId', () => {
+    test('Should return 403 on load employee by id without access token', async () => {
+      await request(app)
+        .get('/api/employee/any_id')
+        .expect(403)
     })
   })
 })

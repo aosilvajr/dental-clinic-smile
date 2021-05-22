@@ -36,4 +36,10 @@ describe('DbUpdateEmployeeById', () => {
     await sut.updateById(mockEmployeeModel.id)
     expect(updateSpy).toHaveBeenCalledWith(mockEmployeeModel.id)
   })
+
+  test('Should return employee on success', async () => {
+    const { sut } = makeSut()
+    const employees = await sut.updateById(mockEmployeeModel.id)
+    expect(employees).toEqual(mockEmployeeModel)
+  })
 })

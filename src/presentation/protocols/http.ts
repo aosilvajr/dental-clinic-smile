@@ -6,5 +6,6 @@ export type HttpResponse = {
 export type httpRequest = {
   body?: any,
   headers?: any,
-  params?: any
+  params?: any,
+  accountId?: string
 }

@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb'
+
 import { LoadEmployeesRepository } from '@/data/protocols/db/account/load-employees-repository'
 import { AddEmployeeRepository } from '@/data/usecases/employee/add-employee/db-add-employee-protocols'
 import { LoadEmployeeByIdRepository } from '@/data/usecases/employee/load-employee-by-id/db-load-employee-by-id-protocols'
@@ -20,7 +22,7 @@ export class EmployeeMongoRepository implements AddEmployeeRepository, LoadEmplo
 
   async loadById (id: string): Promise<EmployeeModel> {
     const employeeCollection = await MongoHelper.getCollection('employees')
-    const employee = await employeeCollection.findOne({ _id: id })
+    const employee = await employeeCollection.findOne({ _id: new ObjectId(id) })
     return employee && MongoHelper.map(employee)
   }
 }

@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 
+import { mockEmployeeParams } from '@/domain/test'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
 import app from '../config/app'
@@ -10,14 +11,6 @@ import env from '../config/env'
 
 let accountCollection: Collection
 let employeeCollection: Collection
-
-const fakeEmployeeData = {
-  name: faker.internet.userName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  position: faker.name.jobTitle(),
-  birthday: faker.date.past()
-}
 
 const makeAccessToken = async (): Promise<string> => {
   const res = await accountCollection.insertOne({
@@ -61,7 +54,7 @@ describe('Employee Routes', () => {
     test('Should return 403 on add employee without access token', async () => {
       await request(app)
         .post('/api/employees')
-        .send(fakeEmployeeData)
+        .send(mockEmployeeParams)
         .expect(403)
     })
 
@@ -71,7 +64,7 @@ describe('Employee Routes', () => {
       await request(app)
         .post('/api/employees')
         .set('x-access-token', accessToken)
-        .send(fakeEmployeeData)
+        .send(mockEmployeeParams)
         .expect(204)
     })
   })
@@ -89,7 +82,7 @@ describe('Employee Routes', () => {
       await request(app)
         .get('/api/employees')
         .set('x-access-token', accessToken)
-        .send(fakeEmployeeData)
+        .send(mockEmployeeParams)
         .expect(204)
     })
   })
@@ -103,7 +96,7 @@ describe('Employee Routes', () => {
 
     test('Should return 200 on load employee by id with valid access token', async () => {
       const accessToken = await makeAccessToken()
-      const res = await employeeCollection.insertOne(fakeEmployeeData)
+      const res = await employeeCollection.insertOne(mockEmployeeParams)
 
       await request(app)
         .get(`/api/employee/${res.ops[0]._id}`)
@@ -117,6 +110,19 @@ describe('Employee Routes', () => {
       await request(app)
         .put('/api/employee/any_id')
         .expect(403)
+    })
+
+    test('Should return 200 on update employee with valid access token', async () => {
+      const accessToken = await makeAccessToken()
+      const res = await employeeCollection.insertOne(mockEmployeeParams)
+      const employeeId = res.ops[0]._id
+      const employeeData = Object.assign({}, { mockEmployeeParams }, { id: employeeId })
+
+      await request(app)
+        .put(`/api/employee/${employeeId}`)
+        .set('x-access-token', accessToken)
+        .send(employeeData)
+        .expect(200)
     })
   })
 })

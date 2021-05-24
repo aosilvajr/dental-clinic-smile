@@ -94,7 +94,7 @@ describe('Employee Routes', () => {
     })
   })
 
-  describe('GET /employees/:employeeId', () => {
+  describe('GET /employee/:employeeId', () => {
     test('Should return 403 on load employee by id without access token', async () => {
       await request(app)
         .get('/api/employee/any_id')
@@ -109,6 +109,14 @@ describe('Employee Routes', () => {
         .get(`/api/employee/${res.ops[0]._id}`)
         .set('x-access-token', accessToken)
         .expect(200)
+    })
+  })
+
+  describe('PUT /employee/:employeeId', () => {
+    test('Should return 403 on update employee without access token', async () => {
+      await request(app)
+        .put('/api/employee/any_id')
+        .expect(403)
     })
   })
 })

@@ -1,6 +1,6 @@
 import { UpdateEmployee } from '@/domain/usecases/employee/update-employee-by-id'
 import { InvalidParamError } from '@/presentation/errors'
-import { forbidden } from '@/presentation/helper/http/http-helper'
+import { forbidden, ok } from '@/presentation/helper/http/http-helper'
 import { Controller, httpRequest, HttpResponse } from '@/presentation/protocols'
 
 export class UpdateEmployeeController implements Controller {
@@ -13,6 +13,6 @@ export class UpdateEmployeeController implements Controller {
     if (!employee) {
       return forbidden(new InvalidParamError('employeeId'))
     }
-    return null
+    return ok(employee)
   }
 }

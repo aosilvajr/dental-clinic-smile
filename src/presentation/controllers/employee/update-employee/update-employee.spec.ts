@@ -1,9 +1,9 @@
 import faker from 'faker'
 
-import { mockEmployeeModel } from '@/domain/test'
+import { mockEmployeeModel, throwError } from '@/domain/test'
 import { UpdateEmployee } from '@/domain/usecases/employee/update-employee-by-id'
 import { InvalidParamError } from '@/presentation/errors'
-import { forbidden, ok } from '@/presentation/helper/http/http-helper'
+import { forbidden, ok, serverError } from '@/presentation/helper/http/http-helper'
 import { httpRequest } from '@/presentation/protocols'
 import { mockUpdateEmployee } from '@/presentation/test'
 
@@ -46,6 +46,17 @@ describe('UpdateEmployee Controller', () => {
 
     const httpResponse = await sut.handle(makeFakeRequest)
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('employeeId')))
+  })
+
+  test('Should return 500 if UpdateEmployee throws', async () => {
+    const { sut, updateEmployeeStub } = makeSut()
+
+    jest
+      .spyOn(updateEmployeeStub, 'update')
+      .mockImplementationOnce(throwError)
+
+    const httpResponse = await sut.handle(makeFakeRequest)
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return 200 on success', async () => {

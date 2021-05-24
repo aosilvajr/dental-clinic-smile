@@ -1,13 +1,12 @@
 import faker from 'faker'
 
 import { mockEmployeeModel, throwError } from '@/domain/test'
-import { UpdateEmployee } from '@/domain/usecases/employee/update-employee-by-id'
 import { InvalidParamError } from '@/presentation/errors'
 import { forbidden, ok, serverError } from '@/presentation/helper/http/http-helper'
-import { httpRequest } from '@/presentation/protocols'
 import { mockUpdateEmployee } from '@/presentation/test'
 
 import { UpdateEmployeeController } from './update-employee'
+import { httpRequest, UpdateEmployee } from './update-employee-protocols'
 
 const makeFakeRequest: httpRequest = {
   params: {

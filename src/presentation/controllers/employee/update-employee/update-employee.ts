@@ -1,7 +1,7 @@
-import { UpdateEmployee } from '@/domain/usecases/employee/update-employee-by-id'
 import { InvalidParamError } from '@/presentation/errors'
 import { forbidden, ok, serverError } from '@/presentation/helper/http/http-helper'
-import { Controller, httpRequest, HttpResponse } from '@/presentation/protocols'
+
+import { Controller, httpRequest, HttpResponse, UpdateEmployee } from './update-employee-protocols'
 
 export class UpdateEmployeeController implements Controller {
   constructor (

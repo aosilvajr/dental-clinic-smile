@@ -8,11 +8,9 @@ import { mockLoadEmployeeById } from '@/presentation/test'
 import { LoadEmployeeByIdController } from './load-employee-by-id-controller'
 import { httpRequest, LoadEmployeeById } from './load-employee-by-id-controller-protocols'
 
-const employeeId: string = faker.datatype.uuid()
-
 const makeFakeRequest: httpRequest = {
   params: {
-    employeeId
+    employeeId: faker.datatype.uuid()
   }
 }
 

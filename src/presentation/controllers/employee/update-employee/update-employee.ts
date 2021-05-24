@@ -10,7 +10,7 @@ export class UpdateEmployeeController implements Controller {
 
   async handle (httpRequest: httpRequest): Promise<HttpResponse> {
     try {
-      const employee = await this.updateEmployee.update(httpRequest.params.employeeId)
+      const employee = await this.updateEmployee.update(httpRequest.body)
       if (!employee) {
         return forbidden(new InvalidParamError('employeeId'))
       }

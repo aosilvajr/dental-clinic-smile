@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 import { LoadEmployeesRepository } from '@/data/protocols/db/account/load-employees-repository'
-import { UpdateEmployeeRepository } from '@/data/protocols/db/employee/update-employee-by-id-repository'
+import { UpdateEmployeeRepository } from '@/data/protocols/db/employee/update-employee-repository'
 import { AddEmployeeRepository } from '@/data/usecases/employee/add-employee/db-add-employee-protocols'
 import { LoadEmployeeByIdRepository } from '@/data/usecases/employee/load-employee-by-id/db-load-employee-by-id-protocols'
 import { EmployeeModel } from '@/domain/models/employee'
@@ -30,7 +30,7 @@ export class EmployeeMongoRepository implements AddEmployeeRepository, LoadEmplo
   async update (employeeData: EmployeeModel): Promise<EmployeeModel> {
     const employeeCollection = await MongoHelper.getCollection('employees')
     const employee = await employeeCollection.findOneAndUpdate({
-      _id: employeeData.id
+      _id: new ObjectId(employeeData.id)
     }, {
       $set: employeeData
     }, {

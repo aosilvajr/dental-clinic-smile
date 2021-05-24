@@ -76,7 +76,7 @@ describe('Employee Mongo Respository', () => {
         birthday: faker.date.past(),
         createdAt: new Date()
       }
-      const employee = await sut.updateById(newEmployeeData)
+      const employee = await sut.update(newEmployeeData)
       expect(employee).toBeTruthy()
       expect(employee.id).toEqual(res.ops[0]._id)
       expect(employee.id).toEqual(newEmployeeData.id)

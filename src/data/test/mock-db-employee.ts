@@ -5,7 +5,7 @@ import { AddEmployeeParams } from '@/domain/usecases/employee/add-employee'
 import { LoadEmployeesRepository } from '../protocols/db/account/load-employees-repository'
 import { AddEmployeeRepository } from '../protocols/db/employee/add-employee-repository'
 import { LoadEmployeeByIdRepository } from '../protocols/db/employee/load-employee-by-id-repository'
-import { UpdateEmployeeByIdRepository } from '../protocols/db/employee/update-employee-by-id-repository'
+import { UpdateEmployeeRepository } from '../protocols/db/employee/update-employee-by-id-repository'
 
 export const mockAddEmployeeRepository = (): AddEmployeeRepository => {
   class AddEmployeeRepositoryStub implements AddEmployeeRepository {
@@ -27,14 +27,14 @@ export const mockLoadEmployeeByIdRepository = (): LoadEmployeeByIdRepository => 
   return new LoadEmployeeByIdRepositoryStub()
 }
 
-export const mockUpdateEmployeeRepository = (): UpdateEmployeeByIdRepository => {
-  class UpdateEmployeeByIdRepositoryStub implements UpdateEmployeeByIdRepository {
-    async updateById (employeeData: EmployeeModel): Promise<EmployeeModel> {
+export const mockUpdateEmployeeRepository = (): UpdateEmployeeRepository => {
+  class UpdateEmployeeRepositoryStub implements UpdateEmployeeRepository {
+    async update (employeeData: EmployeeModel): Promise<EmployeeModel> {
       return Promise.resolve(mockEmployeeModel)
     }
   }
 
-  return new UpdateEmployeeByIdRepositoryStub()
+  return new UpdateEmployeeRepositoryStub()
 }
 
 export const mockLoadEmployeesRepository = (): LoadEmployeesRepository => {

@@ -1,5 +1,5 @@
 import { EmployeeModel } from '../../models/Employee'
 
-export interface UpdateEmployeeById {
-  updateById(employeeData: EmployeeModel): Promise<EmployeeModel>
+export interface UpdateEmployee {
+  update(employeeData: EmployeeModel): Promise<EmployeeModel>
 }

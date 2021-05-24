@@ -1,5 +1,5 @@
 import { EmployeeModel } from '@/domain/models/employee'
 
-export interface UpdateEmployeeByIdRepository {
-  updateById(employeeData: EmployeeModel): Promise<EmployeeModel>
+export interface UpdateEmployeeRepository {
+  update(employeeData: EmployeeModel): Promise<EmployeeModel>
 }

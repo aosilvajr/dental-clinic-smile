@@ -3,6 +3,7 @@ import { mockEmployeeModel, mockEmployeesModel } from '@/domain/test'
 import { AddEmployee, AddEmployeeParams } from '@/domain/usecases/employee/add-employee'
 import { LoadEmployeeById } from '@/domain/usecases/employee/load-employee-by-id'
 import { LoadEmployees } from '@/domain/usecases/employee/load-employees'
+import { UpdateEmployee } from '@/domain/usecases/employee/update-employee-by-id'
 
 export const mockAddEmployee = (): AddEmployee => {
   class AddEmployeeStub implements AddEmployee {
@@ -32,4 +33,14 @@ export const mockLoadEmployeeById = (): LoadEmployeeById => {
   }
 
   return new LoadEmployeByIdStub()
+}
+
+export const mockUpdateEmployee = (): UpdateEmployee => {
+  class UpdateEmployeStub implements UpdateEmployee {
+    async update (employeeData: EmployeeModel): Promise<EmployeeModel> {
+      return Promise.resolve(mockEmployeeModel)
+    }
+  }
+
+  return new UpdateEmployeStub()
 }

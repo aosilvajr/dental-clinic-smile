@@ -1,4 +1,6 @@
 import { UpdateEmployee } from '@/domain/usecases/employee/update-employee-by-id'
+import { InvalidParamError } from '@/presentation/errors'
+import { forbidden } from '@/presentation/helper/http/http-helper'
 import { Controller, httpRequest, HttpResponse } from '@/presentation/protocols'
 
 export class UpdateEmployeeController implements Controller {
@@ -7,7 +9,10 @@ export class UpdateEmployeeController implements Controller {
   ) { }
 
   async handle (httpRequest: httpRequest): Promise<HttpResponse> {
-    await this.updateEmployee.update(httpRequest.params.employeeId)
+    const employee = await this.updateEmployee.update(httpRequest.params.employeeId)
+    if (!employee) {
+      return forbidden(new InvalidParamError('employeeId'))
+    }
     return null
   }
 }

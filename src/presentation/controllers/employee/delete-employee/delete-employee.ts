@@ -1,4 +1,5 @@
 import { DeleteEmployee } from '@/domain/usecases/employee/delete-employee'
+import { serverError } from '@/presentation/helper/http/http-helper'
 import { Controller, httpRequest, HttpResponse } from '@/presentation/protocols'
 
 export class DeleteEmployeeController implements Controller {
@@ -7,7 +8,11 @@ export class DeleteEmployeeController implements Controller {
   ) { }
 
   async handle (httpRequest: httpRequest): Promise<HttpResponse> {
-    await this.deleteEmployee.delete(httpRequest.params.employeeId)
-    return null
+    try {
+      await this.deleteEmployee.delete(httpRequest.params.employeeId)
+      return null
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }

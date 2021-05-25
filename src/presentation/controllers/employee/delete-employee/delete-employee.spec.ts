@@ -1,6 +1,8 @@
 import faker from 'faker'
 
+import { throwError } from '@/domain/test'
 import { DeleteEmployee } from '@/domain/usecases/employee/delete-employee'
+import { serverError } from '@/presentation/helper/http/http-helper'
 import { httpRequest } from '@/presentation/protocols'
 import { mockDeleteEmployee } from '@/presentation/test'
 
@@ -33,5 +35,16 @@ describe('DeleteEmployee Controller', () => {
     const deleteSpy = jest.spyOn(deleteEmployeeStub, 'delete')
     await sut.handle(makeFakeRequest)
     expect(deleteSpy).toHaveBeenCalledWith(makeFakeRequest.params.employeeId)
+  })
+
+  test('Should return 500 if DeleteEmployee throws', async () => {
+    const { sut, deleteEmployeeStub } = makeSut()
+
+    jest
+      .spyOn(deleteEmployeeStub, 'delete')
+      .mockImplementationOnce(throwError)
+
+    const httpResponse = await sut.handle(makeFakeRequest)
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })

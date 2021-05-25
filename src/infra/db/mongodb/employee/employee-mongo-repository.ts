@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 import { LoadEmployeesRepository } from '@/data/protocols/db/account/load-employees-repository'
+import { DeleteEmployeeRepository } from '@/data/protocols/db/employee/delete-employee-repository'
 import { UpdateEmployeeRepository } from '@/data/protocols/db/employee/update-employee-repository'
 import { AddEmployeeRepository } from '@/data/usecases/employee/add-employee/db-add-employee-protocols'
 import { LoadEmployeeByIdRepository } from '@/data/usecases/employee/load-employee-by-id/db-load-employee-by-id-protocols'
@@ -9,7 +10,7 @@ import { AddEmployeeParams } from '@/domain/usecases/employee/add-employee'
 
 import { MongoHelper } from '../helpers/mongo-helper'
 
-export class EmployeeMongoRepository implements AddEmployeeRepository, LoadEmployeesRepository, LoadEmployeeByIdRepository, UpdateEmployeeRepository {
+export class EmployeeMongoRepository implements AddEmployeeRepository, LoadEmployeesRepository, LoadEmployeeByIdRepository, UpdateEmployeeRepository, DeleteEmployeeRepository {
   async add (employeeData: AddEmployeeParams): Promise<void> {
     const employeeCollection = await MongoHelper.getCollection('employees')
     await employeeCollection.insertOne(employeeData)
@@ -37,5 +38,12 @@ export class EmployeeMongoRepository implements AddEmployeeRepository, LoadEmplo
       returnOriginal: false
     })
     return employee.value && MongoHelper.map(employee.value)
+  }
+
+  async delete (employeeId: string): Promise<void> {
+    const employeeCollection = await MongoHelper.getCollection('employees')
+    await employeeCollection.findOneAndDelete({
+      _id: new ObjectId(employeeId)
+    })
   }
 }

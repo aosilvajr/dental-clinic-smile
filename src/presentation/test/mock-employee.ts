@@ -1,6 +1,7 @@
 import { EmployeeModel } from '@/domain/models/employee'
 import { mockEmployeeModel, mockEmployeesModel } from '@/domain/test'
 import { AddEmployee, AddEmployeeParams } from '@/domain/usecases/employee/add-employee'
+import { DeleteEmployee } from '@/domain/usecases/employee/delete-employee'
 import { LoadEmployeeById } from '@/domain/usecases/employee/load-employee-by-id'
 import { LoadEmployees } from '@/domain/usecases/employee/load-employees'
 import { UpdateEmployee } from '@/domain/usecases/employee/update-employee'
@@ -33,6 +34,16 @@ export const mockLoadEmployeeById = (): LoadEmployeeById => {
   }
 
   return new LoadEmployeByIdStub()
+}
+
+export const mockDeleteEmployee = (): DeleteEmployee => {
+  class DeleteEmployeStub implements DeleteEmployee {
+    async delete (employeeId: string): Promise<void> {
+      return Promise.resolve()
+    }
+  }
+
+  return new DeleteEmployeStub()
 }
 
 export const mockUpdateEmployee = (): UpdateEmployee => {

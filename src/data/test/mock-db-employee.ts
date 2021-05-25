@@ -4,6 +4,7 @@ import { AddEmployeeParams } from '@/domain/usecases/employee/add-employee'
 
 import { LoadEmployeesRepository } from '../protocols/db/account/load-employees-repository'
 import { AddEmployeeRepository } from '../protocols/db/employee/add-employee-repository'
+import { DeleteEmployeeRepository } from '../protocols/db/employee/delete-employee-repository'
 import { LoadEmployeeByIdRepository } from '../protocols/db/employee/load-employee-by-id-repository'
 import { UpdateEmployeeRepository } from '../protocols/db/employee/update-employee-repository'
 
@@ -25,6 +26,16 @@ export const mockLoadEmployeeByIdRepository = (): LoadEmployeeByIdRepository => 
   }
 
   return new LoadEmployeeByIdRepositoryStub()
+}
+
+export const mockDeleteEmployeeRepository = (): DeleteEmployeeRepository => {
+  class DeleteEmployeeRepositoryStub implements DeleteEmployeeRepository {
+    async delete (employeeId: string): Promise<void> {
+      return Promise.resolve()
+    }
+  }
+
+  return new DeleteEmployeeRepositoryStub()
 }
 
 export const mockUpdateEmployeeRepository = (): UpdateEmployeeRepository => {

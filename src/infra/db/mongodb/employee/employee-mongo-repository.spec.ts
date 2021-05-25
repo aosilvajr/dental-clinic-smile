@@ -84,4 +84,14 @@ describe('Employee Mongo Respository', () => {
       expect(employee.email).toEqual(newEmployeeData.email)
     })
   })
+
+  describe('delete()', () => {
+    test('Should delete employee on success', async () => {
+      const res = await employeeCollection.insertOne(mockEmployeeModel)
+      const sut = makeSut()
+      await sut.delete(res.ops[0]._id)
+      const employee = await employeeCollection.findOne({ _id: res.ops[0]._id })
+      expect(employee).toBeNull()
+    })
+  })
 })

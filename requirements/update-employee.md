@@ -5,7 +5,7 @@
 1. ✅ Recebe uma requisição do tipo **PUT** na rota **/api/employee/{employee_id}**
 2. ✅ Valida se a requisição foi feita por um **usuário**
 3. ✅ Valida o parâmetro **employee_id**
-4. ⛔️ Valida se os dados fornecidos são válidos
+4. ⛔️ Valida dados obrigatórios
 5. ✅ **Atualiza** um funcionário com os dados fonecidos
 6. ✅ Retorna **200** com os dados atualizados do funcionário
 

@@ -6,7 +6,7 @@
 2. ✅ Valida se a requisição foi feita por um admin
 4. ✅ Valida dados obrigatórios
 5. ✅ Cria um funcionário com os dados fonecidos
-6. ✅ Retorna 204 (não retorna nada)
+6. ✅ Retorna **204** (não retorna nada)
 
 > ## Exceções
 

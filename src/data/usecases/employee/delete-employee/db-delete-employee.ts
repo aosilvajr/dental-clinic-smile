@@ -1,5 +1,4 @@
-import { DeleteEmployeeRepository } from '@/data/protocols/db/employee/delete-employee-repository'
-import { DeleteEmployee } from '@/domain/usecases/employee/delete-employee'
+import { DeleteEmployeeRepository, DeleteEmployee } from './db-delete-employee-protocols'
 
 export class DbDeleteEmployee implements DeleteEmployee {
   constructor (

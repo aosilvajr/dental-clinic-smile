@@ -1,10 +1,10 @@
 import MockDate from 'mockdate'
 
-import { DeleteEmployeeRepository } from '@/data/protocols/db/employee/delete-employee-repository'
 import { mockDeleteEmployeeRepository } from '@/data/test'
-import { mockEmployeeModel } from '@/domain/test'
+import { mockEmployeeModel, throwError } from '@/domain/test'
 
 import { DbDeleteEmployee } from './db-delete-employee'
+import { DeleteEmployeeRepository } from './db-delete-employee-protocols'
 
 type SutTypes = {
   sut: DbDeleteEmployee,
@@ -35,5 +35,16 @@ describe('DbDeleteEmployee', () => {
     const deleteSpy = jest.spyOn(deleteEmployeeRepositoryStub, 'delete')
     await sut.delete(mockEmployeeModel.id)
     expect(deleteSpy).toHaveBeenCalledWith(mockEmployeeModel.id)
+  })
+
+  test('Should throw if DeleteEmployeeRepository throws', async () => {
+    const { sut, deleteEmployeeRepositoryStub } = makeSut()
+
+    jest
+      .spyOn(deleteEmployeeRepositoryStub, 'delete')
+      .mockImplementationOnce(throwError)
+
+    const promise = sut.delete(mockEmployeeModel.id)
+    await expect(promise).rejects.toThrow()
   })
 })

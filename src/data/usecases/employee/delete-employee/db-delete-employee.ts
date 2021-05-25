@@ -8,6 +8,5 @@ export class DbDeleteEmployee implements DeleteEmployee {
 
   async delete (employeeId: string): Promise<void> {
     await this.deleteEmployeeRepository.delete(employeeId)
-    return null
   }
 }

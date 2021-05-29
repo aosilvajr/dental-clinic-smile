@@ -1,3 +1,5 @@
+import { Profile } from './profile'
+
 export type PatientModel = {
   id: string
   name: string
@@ -10,4 +12,6 @@ export type PatientModel = {
   startTreatment: Date
   endTreatment: Date
   createdAt: Date
+  updatedAt: Date
+  profile: Profile
 }

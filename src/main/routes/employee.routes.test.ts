@@ -132,5 +132,16 @@ describe('Employee Routes', () => {
         .delete('/api/employee/any_id')
         .expect(403)
     })
+
+    test('Should return 200 on delete employee with valid access token', async () => {
+      const accessToken = await makeAccessToken()
+      const res = await employeeCollection.insertOne(mockEmployeeParams)
+      const employeeId = res.ops[0]._id
+
+      await request(app)
+        .delete(`/api/employee/${employeeId}`)
+        .set('x-access-token', accessToken)
+        .expect(204)
+    })
   })
 })

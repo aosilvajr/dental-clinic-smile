@@ -125,4 +125,12 @@ describe('Employee Routes', () => {
         .expect(200)
     })
   })
+
+  describe('DELETE /employee/:employeeId', () => {
+    test('Should return 403 on delete employee without access token', async () => {
+      await request(app)
+        .delete('/api/employee/any_id')
+        .expect(403)
+    })
+  })
 })

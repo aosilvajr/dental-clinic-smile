@@ -28,7 +28,7 @@ const makeSut = (role?: string): SutTypes => {
 }
 
 describe('Auth Middleware', () => {
-  test('Should return 403 if no x-access-token exists in header', async () => {
+  test('Should return 403 if x-access-token exists in header', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
@@ -42,7 +42,7 @@ describe('Auth Middleware', () => {
     expect(loadSpy).toHaveBeenCalledWith('any_token', role)
   })
 
-  test('Should return 403 if no LoadAccountByToken returns null', async () => {
+  test('Should return 403 if LoadAccountByToken returns null', async () => {
     const { sut, loadAccountByTokenStub } = makeSut()
 
     jest
@@ -53,13 +53,13 @@ describe('Auth Middleware', () => {
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
 
-  test('Should return 200 if no LoadAccountByToken returns an account', async () => {
+  test('Should return 200 if LoadAccountByToken returns an account', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(ok({ accountId: mockAccountModel.id }))
   })
 
-  test('Should return 400 if no LoadAccountByToken throws', async () => {
+  test('Should return 400 if LoadAccountByToken throws', async () => {
     const { sut, loadAccountByTokenStub } = makeSut()
 
     jest

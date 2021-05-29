@@ -6,7 +6,7 @@ import { noContent, serverError } from '@/presentation/helper/http/http-helper'
 import { httpRequest } from '@/presentation/protocols'
 import { mockDeleteEmployee } from '@/presentation/test'
 
-import { DeleteEmployeeController } from './delete-employee'
+import { DeleteEmployeeController } from './delete-employee-controller'
 
 const mockRequest: httpRequest = {
   params: {

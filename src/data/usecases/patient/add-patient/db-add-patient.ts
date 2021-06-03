@@ -1,5 +1,4 @@
-import { AddPatientRepository } from '@/data/protocols/db/patient/add-patient-repository'
-import { AddPatientParams } from '@/domain/usecases/patient/add-patient'
+import { AddPatientParams, AddPatientRepository } from './db-add-patient-protocols'
 
 export class DbAddPatient implements AddPatientRepository {
   constructor (

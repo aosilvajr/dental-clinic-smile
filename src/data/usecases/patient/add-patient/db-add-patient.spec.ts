@@ -1,8 +1,8 @@
-import { AddPatientRepository } from '@/data/protocols/db/patient/add-patient-repository'
 import { AddPatientRepositoryStub } from '@/data/test'
 import { mockPatientParams } from '@/domain/test'
 
-import { DbAddPatient } from './add-patient'
+import { DbAddPatient } from './db-add-patient'
+import { AddPatientRepository } from './db-add-patient-protocols'
 
 type SutTypes = {
   sut: DbAddPatient,

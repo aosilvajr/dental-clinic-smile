@@ -1,8 +1,9 @@
 import faker from 'faker'
 
+import { AddPatient } from '@/domain/usecases/patient/add-patient'
 import { badRequest } from '@/presentation/helper/http/http-helper'
 import { httpRequest, Validation } from '@/presentation/protocols'
-import { mockValidation } from '@/presentation/test'
+import { mockValidation, mockAddPatient } from '@/presentation/test'
 
 import { AddPatientController } from './add-patient-controller'
 
@@ -33,15 +34,18 @@ const mockRequest = (): httpRequest => ({
 type SutTypes = {
   sut: AddPatientController
   validationStub: Validation
+  addPatientStub: AddPatient
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = mockValidation()
-  const sut = new AddPatientController(validationStub)
+  const addPatientStub = mockAddPatient()
+  const sut = new AddPatientController(validationStub, addPatientStub)
 
   return {
     sut,
-    validationStub
+    validationStub,
+    addPatientStub
   }
 }
 
@@ -63,5 +67,13 @@ describe('AddPatient Controller', () => {
 
     const httpRequest = await sut.handle(mockRequest())
     expect(httpRequest).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call AddPatient with correct values', async () => {
+    const { sut, addPatientStub } = makeSut()
+    const validationSpy = jest.spyOn(addPatientStub, 'add')
+    const httpRequest = mockRequest()
+    await sut.handle(httpRequest)
+    expect(validationSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })

@@ -1,5 +1,5 @@
 import { AddPatientRepositoryStub } from '@/data/test'
-import { mockPatientParams } from '@/domain/test'
+import { mockPatientParams, throwError } from '@/domain/test'
 
 import { DbAddPatient } from './db-add-patient'
 import { AddPatientRepository } from './db-add-patient-protocols'
@@ -25,5 +25,16 @@ describe('DbAddPatient Usecase', () => {
     const addSpy = jest.spyOn(addPatientRepositoryStub, 'add')
     await sut.add(mockPatientParams)
     expect(addSpy).toHaveBeenCalledWith(mockPatientParams)
+  })
+
+  test('Should throw if AddPatientRepository throws', async () => {
+    const { sut, addPatientRepositoryStub } = makeSut()
+
+    jest
+      .spyOn(addPatientRepositoryStub, 'add')
+      .mockImplementationOnce(throwError)
+
+    const promise = sut.add(mockPatientParams)
+    await expect(promise).rejects.toThrow()
   })
 })

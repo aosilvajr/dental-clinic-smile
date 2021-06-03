@@ -3,6 +3,6 @@ export type Profile = {
   street: string;
   city: string;
   state: string;
-  number: string;
+  number: number;
   complement: string;
 }

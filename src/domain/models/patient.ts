@@ -8,7 +8,7 @@ export type PatientModel = {
   whatsapp: string
   occupation: string
   indication: string
-  acceptMessage: string
+  acceptMessage: boolean
   startTreatment: Date
   endTreatment: Date
   createdAt: Date

@@ -16,7 +16,7 @@ O objetivo desse projeto é aplicar os conhecimentos adiquiridos no treinamento 
 3. [Criar Funcionário](./requirements/add-employee.md)
 3. [Carregar Funcionários](./requirements/load-employees.md)
 3. [Atualizar Funcionário](./requirements/update-employee.md)
-3. [Deletarr Funcionário](./requirements/delete-employee.md)
+3. [Deletar Funcionário](./requirements/delete-employee.md)
 
 > ## Princípios
 

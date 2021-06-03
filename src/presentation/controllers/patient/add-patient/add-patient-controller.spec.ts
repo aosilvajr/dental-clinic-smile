@@ -1,5 +1,6 @@
 import faker from 'faker'
 
+import { badRequest } from '@/presentation/helper/http/http-helper'
 import { httpRequest, Validation } from '@/presentation/protocols'
 import { mockValidation } from '@/presentation/test'
 
@@ -51,5 +52,16 @@ describe('AddPatient Controller', () => {
     const httpRequest = mockRequest()
     await sut.handle(httpRequest)
     expect(validationSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 400 if validation fails', async () => {
+    const { sut, validationStub } = makeSut()
+
+    jest
+      .spyOn(validationStub, 'validate')
+      .mockReturnValueOnce(new Error())
+
+    const httpRequest = await sut.handle(mockRequest())
+    expect(httpRequest).toEqual(badRequest(new Error()))
   })
 })

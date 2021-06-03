@@ -1,6 +1,6 @@
-import { AddPatientParams, AddPatientRepository } from './db-add-patient-protocols'
+import { AddPatientParams, AddPatientRepository, AddPatient } from './db-add-patient-protocols'
 
-export class DbAddPatient implements AddPatientRepository {
+export class DbAddPatient implements AddPatient {
   constructor (
     private readonly addPatientRepository: AddPatientRepository
   ) { }

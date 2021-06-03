@@ -1,6 +1,13 @@
-import { AddPatient } from '@/domain/usecases/patient/add-patient'
-import { badRequest, serverError } from '@/presentation/helper/http/http-helper'
-import { Controller, httpRequest, HttpResponse, Validation } from '@/presentation/protocols'
+import { badRequest, noContent, serverError } from '@/presentation/helper/http/http-helper'
+
+import {
+  Controller,
+  httpRequest,
+  HttpResponse,
+  Validation,
+  PatientModel,
+  AddPatient
+} from './add-patient-controller-protocols'
 
 export class AddPatientController implements Controller {
   constructor (
@@ -14,8 +21,33 @@ export class AddPatientController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      await this.addPatient.add(httpRequest.body)
-      return null
+      const {
+        name,
+        email,
+        phone,
+        whatsapp,
+        occupation,
+        indication,
+        acceptMessage,
+        startTreatment,
+        endTreatment,
+        profile
+      }: PatientModel = httpRequest.body
+      await this.addPatient.add({
+        name,
+        email,
+        phone,
+        whatsapp,
+        occupation,
+        indication,
+        acceptMessage,
+        startTreatment,
+        endTreatment,
+        profile,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+      return noContent()
     } catch (error) {
       return serverError(error)
     }

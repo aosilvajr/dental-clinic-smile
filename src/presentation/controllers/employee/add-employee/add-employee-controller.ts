@@ -5,7 +5,8 @@ import {
   httpRequest,
   HttpResponse,
   Validation,
-  AddEmployee
+  AddEmployee,
+  AddEmployeeParams
 } from './add-employee-controller-protocols'
 
 export class AddEmployeeController implements Controller {
@@ -26,7 +27,7 @@ export class AddEmployeeController implements Controller {
         phone,
         position,
         birthday
-      } = httpRequest.body
+      }: AddEmployeeParams = httpRequest.body
       await this.addEmployee.add({
         name,
         email,

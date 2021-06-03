@@ -5,7 +5,7 @@ import {
   httpRequest,
   HttpResponse,
   Validation,
-  PatientModel,
+  AddPatientParams,
   AddPatient
 } from './add-patient-controller-protocols'
 
@@ -32,7 +32,7 @@ export class AddPatientController implements Controller {
         startTreatment,
         endTreatment,
         profile
-      }: PatientModel = httpRequest.body
+      }: AddPatientParams = httpRequest.body
       await this.addPatient.add({
         name,
         email,

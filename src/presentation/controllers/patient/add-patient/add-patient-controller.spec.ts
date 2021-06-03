@@ -1,7 +1,8 @@
 import faker from 'faker'
 
+import { throwError } from '@/domain/test'
 import { AddPatient } from '@/domain/usecases/patient/add-patient'
-import { badRequest } from '@/presentation/helper/http/http-helper'
+import { badRequest, serverError } from '@/presentation/helper/http/http-helper'
 import { httpRequest, Validation } from '@/presentation/protocols'
 import { mockValidation, mockAddPatient } from '@/presentation/test'
 
@@ -75,5 +76,16 @@ describe('AddPatient Controller', () => {
     const httpRequest = mockRequest()
     await sut.handle(httpRequest)
     expect(validationSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return 500 if AddPatient throws', async () => {
+    const { sut, addPatientStub } = makeSut()
+
+    jest
+      .spyOn(addPatientStub, 'add')
+      .mockImplementationOnce(throwError)
+
+    const httpRequest = await sut.handle(mockRequest())
+    expect(httpRequest).toEqual(serverError(new Error()))
   })
 })
